@@ -1,0 +1,126 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Control de Acceso Rápido - Garras Fitness Club";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    <div id="pantallaSemaforo" class="d-flex flex-column align-items-center justify-content-center vh-100 p-3" style="background-color: #111827; transition: background-color 0.3s ease;">
+
+        <div class="text-center text-white mb-4">
+            <h1 class="display-4 fw-bold" style="font-family: 'Montserrat', sans-serif;">GARRAS FITNESS CLUB</h1>
+            <p class="fs-5 text-light opacity-75">Control de Ingreso en Mostrador</p>
+        </div>
+
+        <div class="card p-4 shadow-lg border-0 rounded-4 text-center" style="max-width: 500px; width: 100%; background-color: #FFFFFF;">
+            <label for="inputCI" class="form-label fw-bold fs-5 mb-3" style="color: #111827;">
+                Ingrese Cédula de Identidad (CI):
+            </label>
+
+            <div class="input-group mb-3">
+                <input type="text" id="inputCI" class="form-control form-control-lg text-center fw-bold fs-4" placeholder="Ej. 8765432" autofocus autocomplete="off" />
+            </div>
+
+            <!-- Alerta bonita para cuando no se encuentra el socio o hay error de servidor -->
+            <div id="alertaError" class="d-none align-items-start gap-2 mb-3 p-3 rounded-3 text-start"
+                 style="background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #B91C1C; font-size: 0.9rem;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0; margin-top:2px;">
+                    <circle cx="12" cy="12" r="10" stroke="#B91C1C" stroke-width="2" />
+                    <path d="M12 8v5" stroke="#B91C1C" stroke-width="2" stroke-linecap="round" />
+                    <circle cx="12" cy="16" r="1" fill="#B91C1C" />
+                </svg>
+                <span id="mensajeError">Socio no encontrado. Verifique el número de CI.</span>
+            </div>
+
+            <button id="btnVerificar" class="btn btn-lg text-white fw-bold py-2 rounded-3" style="background-color: #F97316; border: none;">
+                Validar Acceso
+            </button>
+        </div>
+
+        <!-- Contenedor del Resultado Visual -->
+        <div id="resultadoAcceso" class="mt-4 text-center text-white d-none">
+            <h2 id="mensajeEstado" class="display-3 fw-bold"></h2>
+            <p id="detalleSocio" class="fs-4"></p>
+            <p id="diasMorosidad" class="fs-5 fw-semibold"></p>
+        </div>
+    </div>
+
+    <script>
+            const inputCI = document.getElementById('inputCI');
+            const btnVerificar = document.getElementById('btnVerificar');
+            const pantalla = document.getElementById('pantallaSemaforo');
+            const contenedorResultado = document.getElementById('resultadoAcceso');
+            const mensajeEstado = document.getElementById('mensajeEstado');
+            const detalleSocio = document.getElementById('detalleSocio');
+            const diasMorosidad = document.getElementById('diasMorosidad');
+            const alertaError = document.getElementById('alertaError');
+            const mensajeError = document.getElementById('mensajeError');
+
+            function ocultarAlertaError() {
+                alertaError.classList.add('d-none');
+                alertaError.classList.remove('d-flex');
+            }
+
+            function mostrarAlertaError(texto) {
+                mensajeError.textContent = texto;
+                alertaError.classList.remove('d-none');
+                alertaError.classList.add('d-flex');
+            }
+
+            function verificarAcceso() {
+                const ci = inputCI.value.trim();
+                if (!ci) return;
+
+                ocultarAlertaError();
+
+                fetch(`/Acceso/Verificar?ci=${encodeURIComponent(ci)}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Error en consulta');
+                        return response.json();
+                    })
+                    .then(data => {
+                        contenedorResultado.classList.remove('d-none');
+                        detalleSocio.textContent = `Socio: ${data.nombreCompleto}`;
+
+                        if (data.esValido) {
+                            pantalla.style.backgroundColor = '#16A34A';
+                            mensajeEstado.textContent = 'ACCESO PERMITIDO';
+                            diasMorosidad.textContent = `Membresía activa hasta: ${data.fechaVencimiento}`;
+                        } else {
+                            pantalla.style.backgroundColor = '#DC2626';
+                            mensajeEstado.textContent = 'ACCESO DENEGADO';
+                            diasMorosidad.textContent = `Membresía vencida hace ${data.diasVencido} día(s). Debe renovar en caja.`;
+                        }
+
+                        setTimeout(() => {
+                            pantalla.style.backgroundColor = '#111827';
+                            contenedorResultado.classList.add('d-none');
+                            inputCI.value = '';
+                            inputCI.focus();
+                        }, 4000);
+                    })
+                    .catch(err => {
+                        mostrarAlertaError('Socio no encontrado o error en el servidor.');
+                        inputCI.value = '';
+                        inputCI.focus();
+                    });
+            }
+
+            btnVerificar.addEventListener('click', verificarAcceso);
+            inputCI.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    verificarAcceso();
+                }
+            });
+    </script>
+</body>
+</html>

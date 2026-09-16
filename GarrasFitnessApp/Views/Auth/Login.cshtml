@@ -1,0 +1,347 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión - Garras Fitness Club</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+            :root {
+                --primary: #111827; /* Negro carbón */
+                --accent: #F97316; /* Naranja enérgico */
+                --accent-hover: #EA580C; /* Naranja interacción */
+                --bg-light: #F8FAFC; /* Gris neutro */
+                --card-bg: #FFFFFF; /* Blanco puro */
+                --border-soft: #E2E8F0;
+                --danger-bg: #FEF2F2;
+                --danger-border: #FCA5A5;
+                --danger-text: #B91C1C;
+                --font-heading: 'Montserrat', sans-serif;
+                --font-body: 'Inter', sans-serif;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: var(--bg-light);
+                font-family: var(--font-body);
+                color: var(--primary);
+                padding: 20px;
+            }
+
+            .login-container {
+                width: 100%;
+                max-width: 440px;
+            }
+
+            /* ===== LOGO ===== */
+            .logo-wrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 24px;
+            }
+
+            .logo-badge {
+                width: 64px;
+                height: 64px;
+                border-radius: 16px;
+                background-color: var(--primary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 14px;
+                box-shadow: 0 8px 20px rgba(17, 24, 39, 0.25);
+            }
+
+                .logo-badge svg {
+                    width: 34px;
+                    height: 34px;
+                }
+
+            .logo-title {
+                font-family: var(--font-heading);
+                font-weight: 900;
+                font-size: 26px;
+                letter-spacing: 1px;
+                color: var(--primary);
+                text-align: center;
+            }
+
+                .logo-title span {
+                    color: var(--accent);
+                }
+
+            .logo-subtitle {
+                color: #64748B;
+                font-size: 13.5px;
+                margin-top: 4px;
+                text-align: center;
+            }
+
+            /* ===== CARD ===== */
+            .login-card {
+                background-color: var(--card-bg);
+                border: 1px solid var(--border-soft);
+                border-radius: 16px;
+                padding: 36px 32px;
+                box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
+            }
+
+            /* ===== ALERTA DE ERROR ===== */
+            .alert-garras {
+                display: flex;
+                gap: 10px;
+                align-items: flex-start;
+                background-color: var(--danger-bg);
+                border: 1px solid var(--danger-border);
+                color: var(--danger-text);
+                border-radius: 10px;
+                padding: 12px 14px;
+                margin-bottom: 20px;
+                font-size: 13.5px;
+                line-height: 1.4;
+            }
+
+                .alert-garras svg {
+                    flex-shrink: 0;
+                    width: 18px;
+                    height: 18px;
+                    margin-top: 1px;
+                }
+
+            /* ===== FORM ===== */
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-label {
+                display: block;
+                margin-bottom: 7px;
+                font-size: 12.5px;
+                font-weight: 700;
+                letter-spacing: 0.3px;
+                text-transform: uppercase;
+                color: var(--primary);
+            }
+
+            .form-input {
+                width: 100%;
+                padding: 12px 14px;
+                border: 1.5px solid var(--border-soft);
+                border-radius: 9px;
+                background-color: var(--bg-light);
+                color: var(--primary);
+                font-size: 15px;
+                outline: none;
+                transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            }
+
+                .form-input::placeholder {
+                    color: #94A3B8;
+                }
+
+                .form-input:focus {
+                    border-color: var(--accent);
+                    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+                    background-color: #FFFFFF;
+                }
+
+            .remember {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 18px;
+                font-size: 13.5px;
+                color: #475569;
+            }
+
+                .remember input {
+                    width: 16px;
+                    height: 16px;
+                    accent-color: var(--accent);
+                }
+
+            .forgot-password {
+                display: block;
+                text-align: right;
+                color: var(--accent);
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+
+                .forgot-password:hover {
+                    text-decoration: underline;
+                }
+
+            /* ===== BOTONES ===== */
+            .btn-login {
+                width: 100%;
+                padding: 13px;
+                border: none;
+                border-radius: 9px;
+                background-color: var(--accent);
+                color: #FFFFFF;
+                font-family: var(--font-heading);
+                font-size: 14.5px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: background-color 0.2s ease, transform 0.1s ease;
+            }
+
+                .btn-login:hover {
+                    background-color: var(--accent-hover);
+                }
+
+                .btn-login:active {
+                    transform: scale(0.98);
+                }
+
+            .btn-register {
+                display: block;
+                width: 100%;
+                padding: 12px;
+                margin-top: 10px;
+                border: 1.5px solid var(--primary);
+                border-radius: 9px;
+                background-color: transparent;
+                color: var(--primary);
+                text-align: center;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 700;
+                transition: background-color 0.2s ease, color 0.2s ease;
+            }
+
+                .btn-register:hover {
+                    background-color: var(--primary);
+                    color: #FFFFFF;
+                }
+
+            /* ===== ACCESOS DIRECTOS ===== */
+            .direct-access {
+                margin-top: 22px;
+                padding-top: 20px;
+                border-top: 1px solid var(--border-soft);
+            }
+
+                .direct-access h3 {
+                    text-align: center;
+                    font-size: 11.5px;
+                    font-weight: 700;
+                    letter-spacing: 0.5px;
+                    text-transform: uppercase;
+                    color: #94A3B8;
+                    margin-bottom: 12px;
+                }
+
+            .access-links {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .access-link {
+                display: block;
+                text-align: center;
+                padding: 10px;
+                border-radius: 8px;
+                background-color: var(--bg-light);
+                color: var(--primary);
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 600;
+                transition: background-color 0.2s ease;
+            }
+
+                .access-link:hover {
+                    background-color: #EEF2F6;
+                }
+
+            .footer {
+                text-align: center;
+                margin-top: 20px;
+                color: #94A3B8;
+                font-size: 12px;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+
+        <!-- LOGO -->
+        <div class="logo-wrap">
+            <div class="logo-badge">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 9v6M2 10v4M22 10v4M20 9v6M7 8v8M17 8v8M7 12h10" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="logo-title">GARRAS <span>FITNESS</span> CLUB</div>
+            <div class="logo-subtitle">Control de Acceso y Gestión</div>
+        </div>
+
+        <div class="login-card">
+
+            <form action="#" method="post" autocomplete="off">
+
+                <div class="form-group">
+                    <label class="form-label" for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" class="form-input" placeholder="admin@garrasfitness.com" autofocus required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="contrasena">Contraseña</label>
+                    <input type="password" id="contrasena" name="contrasena" class="form-input" placeholder="••••••••••••" required />
+                </div>
+
+                <div class="remember">
+                    <input type="checkbox" id="rememberMe" name="rememberMe" />
+                    <label for="rememberMe">Recordar sesión</label>
+                </div>
+
+                <a href="#" class="forgot-password">¿Olvidó su clave?</a>
+
+                <button type="submit" class="btn-login">Entrar al Sistema</button>
+            </form>
+
+            <a href="#" class="btn-register">Crear Nuevo Usuario</a>
+
+            <div class="direct-access">
+                <h3>Accesos de operación directa</h3>
+                <div class="access-links">
+                    <a href="#" class="access-link">Semáforo de Acceso</a>
+                    <a href="#" class="access-link">Portal Socio</a>
+                    <a href="#" class="access-link">Administración</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            &copy; 2026 Garras Fitness Club &bull; Cochabamba
+        </div>
+
+    </div>
+
+</body>
+</html>

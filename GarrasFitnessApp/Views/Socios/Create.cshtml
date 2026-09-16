@@ -1,0 +1,70 @@
+﻿@model GarrasFitnessApp.Models.Socio
+
+@{
+    ViewData["Title"] = "Registrar Socio";
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm p-4 mx-auto" style="max-width: 600px;">
+        <h3 class="fw-bold mb-3" style="color: #111827;">Inscripción de Socio</h3>
+
+        <form id="formRegistroSocio" asp-controller="Socios" asp-action="Create" method="post" autocomplete="off" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="NombreCompleto" class="form-label">Nombre Completo</label>
+                <input asp-for="NombreCompleto" class="form-control" id="NombreCompleto" />
+                <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CI" class="form-label">Cédula de Identidad (CI)</label>
+                <input asp-for="CI" class="form-control" id="CI" />
+                <span asp-validation-for="CI" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Telefono" class="form-label">Teléfono</label>
+                <input asp-for="Telefono" class="form-control" id="Telefono" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Correo" class="form-label">Correo Electrónico</label>
+                <input asp-for="Correo" type="email" class="form-control" id="Correo" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FechaVencimiento" class="form-label">Fecha de Vencimiento</label>
+                <input asp-for="FechaVencimiento" type="date" class="form-control" id="FechaVencimiento" />
+                <span asp-validation-for="FechaVencimiento" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn text-white w-100 fw-bold" style="background-color: #F97316;">
+                Guardar Socio
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById('formRegistroSocio').addEventListener('submit', function (e) {
+            const nombre = document.getElementById('NombreCompleto').value.trim();
+            const ci = document.getElementById('CI').value.trim();
+            const telefono = document.getElementById('Telefono').value.trim();
+            const correo = document.getElementById('Correo').value.trim();
+            const fecha = document.getElementById('FechaVencimiento').value;
+
+            if (!nombre || !ci || !telefono || !correo || !fecha) {
+                e.preventDefault();
+                alert('Atención: Todos los campos del socio son obligatorios para completar el registro.');
+            }
+        });
+    </script>
+}
