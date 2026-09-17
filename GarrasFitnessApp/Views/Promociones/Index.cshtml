@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Promociones";
+}
+
+<div class="container py-4" style="background-color: var(--bg-light, #F8FAFC); min-height: 85vh;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0" style="font-family: 'Montserrat', sans-serif; color: var(--primary, #111827);">
+            Promociones Activas
+        </h3>
+        <a asp-controller="Promociones" asp-action="Create" class="btn-garras" style="width: auto; padding: 10px 20px;">
+            + Nueva Promoción
+        </a>
+    </div>
+
+    @{
+        var promocionesEjemplo = new[]
+        {
+            new { Nombre = "Promo Verano", Descuento = 10, Inicio = "01/12/2026", Fin = "28/02/2027", Activa = true },
+            new { Nombre = "Reactivación", Descuento = 20, Inicio = "01/09/2026", Fin = "30/09/2026", Activa = false },
+        };
+    }
+
+    <div class="card-garras p-0">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead style="background-color: var(--bg-light, #F8FAFC);">
+                    <tr>
+                        <th class="ps-4">Nombre</th>
+                        <th>Descuento</th>
+                        <th>Vigencia</th>
+                        <th>Estado</th>
+                        <th class="text-end pe-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var promo in promocionesEjemplo)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-semibold">@promo.Nombre</td>
+                            <td>@promo.Descuento%</td>
+                            <td>@promo.Inicio &ndash; @promo.Fin</td>
+                            <td>
+                                @if (promo.Activa)
+                                {
+                                    <span class="badge rounded-pill" style="background-color: #DCFCE7; color: #166534;">Activa</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill" style="background-color: #F1F5F9; color: #64748B;">Inactiva</span>
+                                }
+                            </td>
+                            <td class="text-end pe-4">
+                                <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                <a href="#" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if (!promocionesEjemplo.Any())
+    {
+        <div class="text-center text-muted mt-4">No hay promociones registradas todavía.</div>
+    }
+</div>
