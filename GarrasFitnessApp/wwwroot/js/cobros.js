@@ -1,11 +1,4 @@
-﻿// wwwroot/js/cobros.js
-// Lógica del mostrador de cobros (Views/Pagos/Create.cshtml)
-// Responsabilidad principal: BLOQUEAR el precio total para que nunca se pueda
-// editar a mano — siempre se recalcula desde el Plan + la Promoción elegidos.
-// También valida que el desglose de métodos de pago (Efectivo/QR/Tarjeta)
-// sume exactamente el total, para no mandarle a Jhoel un dato descuadrado.
-
-(function () {
+﻿(function () {
     document.addEventListener('DOMContentLoaded', function () {
 
         const planSelect = document.getElementById('planSelect');
@@ -14,8 +7,7 @@
         const subtotalDisplay = document.getElementById('subtotalDisplay');
         const descuentoDisplay = document.getElementById('descuentoDisplay');
         const totalDisplay = document.getElementById('totalDisplay');
-        const totalOculto = document.getElementById('MontoTotal'); // input hidden que sí se envía al servidor
-
+        const totalOculto = document.getElementById('MontoTotal'); 
         const inputEfectivo = document.getElementById('montoEfectivo');
         const inputQr = document.getElementById('montoQr');
         const inputTarjeta = document.getElementById('montoTarjeta');
@@ -25,7 +17,6 @@
         const btnCobrar = document.getElementById('btnCobrar');
 
         if (!planSelect || !totalDisplay) {
-            // Esta página no está cargada (o todavía no existe el formulario), no hacer nada.
             return;
         }
 
@@ -33,7 +24,6 @@
             return 'Bs. ' + valor.toFixed(2);
         }
 
-        // === 1. Calcular Subtotal + Descuento + Total (el precio queda BLOQUEADO) ===
         function recalcularTotal() {
             const opcionPlan = planSelect.options[planSelect.selectedIndex];
             const precioPlan = opcionPlan ? parseFloat(opcionPlan.dataset.precio || '0') : 0;
@@ -51,8 +41,7 @@
             descuentoDisplay.textContent = '- ' + formatoMoneda(descuentoAplicado);
             totalDisplay.textContent = formatoMoneda(total);
 
-            // El input real que se manda al backend SIEMPRE se llena por código,
-            // nunca por el usuario. El campo visible es readonly (ver el .cshtml).
+          
             if (totalOculto) {
                 totalOculto.value = total.toFixed(2);
             }
@@ -61,7 +50,7 @@
             return total;
         }
 
-        // === 2. Validar que Efectivo + QR + Tarjeta sumen exactamente el total ===
+      
         function validarDesglose() {
             const total = parseFloat(totalOculto ? totalOculto.value : '0') || 0;
 
@@ -75,7 +64,6 @@
                 sumaDisplay.textContent = formatoMoneda(suma);
             }
 
-            // Se permite un margen mínimo por redondeo de centavos
             const cuadra = Math.abs(suma - total) < 0.01;
 
             if (alertaDescuadre) {
@@ -104,9 +92,6 @@
                 input.addEventListener('input', validarDesglose);
             }
         });
-
-        // Defensa extra: si alguien intenta editar el total "oculto" desde la
-        // consola del navegador, lo recalculamos apenas se envíe el formulario.
         const formularioCobro = document.getElementById('formCobro');
         if (formularioCobro) {
             formularioCobro.addEventListener('submit', function (e) {
