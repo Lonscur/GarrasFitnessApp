@@ -1,0 +1,141 @@
+﻿@{
+    ViewData["Title"] = "Cobrar Renovación";
+}
+
+<div class="container py-4" style="background-color: var(--bg-light, #F8FAFC); min-height: 85vh;">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-7">
+            <div class="card-garras p-0">
+                <div class="card-header border-0 pt-4 pb-0 bg-transparent text-center">
+                    <h3 class="fw-bold" style="font-family: 'Montserrat', sans-serif; color: var(--primary, #111827);">
+                        Mostrador de Renovación
+                    </h3>
+                    <p class="text-muted small">Cobro de membresía en recepción</p>
+                </div>
+                <div class="card-body p-4">
+
+                    <!-- Alerta de descuadre entre el total y la suma de métodos de pago -->
+                    <div id="alertaDescuadre" class="d-none align-items-start gap-2 mb-3 p-3 rounded-3"
+                         style="background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #B91C1C; font-size: 0.9rem;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0; margin-top:2px;">
+                            <circle cx="12" cy="12" r="10" stroke="#B91C1C" stroke-width="2" />
+                            <path d="M12 8v5" stroke="#B91C1C" stroke-width="2" stroke-linecap="round" />
+                            <circle cx="12" cy="16" r="1" fill="#B91C1C" />
+                        </svg>
+                        <div>La suma de Efectivo + QR + Tarjeta no coincide con el Total a Cobrar. Corrige los montos antes de continuar.</div>
+                    </div>
+
+                    <form id="formCobro" asp-controller="Pagos" asp-action="Create" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <!-- Búsqueda de Socio -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="color: var(--primary, #111827);">Cédula del Socio (CI)</label>
+                            <div class="input-group">
+                                <input type="text" name="CiSocio" id="ciSocio" class="form-control" placeholder="Ej. 8765432" required />
+                                <button type="button" id="btnBuscarSocio" class="btn" style="background-color: var(--primary, #111827); color: #FFFFFF;">
+                                    Buscar
+                                </button>
+                            </div>
+                            <div id="nombreSocioEncontrado" class="small text-muted mt-1"></div>
+                        </div>
+
+                        <!-- Selección de Plan -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="color: var(--primary, #111827);">Plan de Membresía</label>
+                            <select id="planSelect" name="PlanId" class="form-select" required>
+                                <option value="" data-precio="0">Seleccione un plan...</option>
+                                <option value="1" data-precio="150">Mensual — Bs. 150.00</option>
+                                <option value="2" data-precio="400">Trimestral — Bs. 400.00</option>
+                                <option value="3" data-precio="1200">Anual — Bs. 1200.00</option>
+                            </select>
+                            <div class="form-text">* Precios de ejemplo, se reemplazan por los reales cuando Jhoel conecte Plan.cs</div>
+                        </div>
+
+                        <!-- Promoción opcional -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold" style="color: var(--primary, #111827);">Promoción (opcional)</label>
+                            <select id="promoSelect" name="PromocionId" class="form-select">
+                                <option value="" data-descuento="0">Ninguna</option>
+                                <option value="1" data-descuento="10">10% — Promo Verano</option>
+                                <option value="2" data-descuento="20">20% — Reactivación</option>
+                            </select>
+                        </div>
+
+                        <div class="p-3 rounded-3 mb-4" style="background-color: var(--bg-light, #F8FAFC); border: 1px solid #E2E8F0;">
+                            <div class="d-flex justify-content-between">
+                                <span>Subtotal</span>
+                                <span id="subtotalDisplay">Bs. 0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between text-danger">
+                                <span>Descuento</span>
+                                <span id="descuentoDisplay">- Bs. 0.00</span>
+                            </div>
+                            <hr />
+                            <div class="d-flex justify-content-between fw-bold fs-5">
+                                <span>Total a Cobrar</span>
+                                <span id="totalDisplay" style="color: var(--accent, #F97316);">Bs. 0.00</span>
+                            </div>
+                            <!-- Este es el único valor que realmente se envía al servidor; lo calcula cobros.js -->
+                            <input type="hidden" id="MontoTotal" name="MontoTotal" value="0" />
+                        </div>
+
+                        <label class="form-label fw-semibold" style="color: var(--primary, #111827);">Desglose de Pago</label>
+                        <div class="row g-2 mb-2">
+                            <div class="col-4">
+                                <label class="form-label small">Efectivo</label>
+                                <input type="number" step="0.01" min="0" id="montoEfectivo" name="MontoEfectivo" class="form-control" placeholder="0.00" />
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label small">QR</label>
+                                <input type="number" step="0.01" min="0" id="montoQr" name="MontoQr" class="form-control" placeholder="0.00" />
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label small">Tarjeta</label>
+                                <input type="number" step="0.01" min="0" id="montoTarjeta" name="MontoTarjeta" class="form-control" placeholder="0.00" />
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between small text-muted mb-4">
+                            <span>Suma ingresada:</span>
+                            <span id="sumaMetodosDisplay">Bs. 0.00</span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" id="btnCobrar" class="btn-garras" disabled>
+                                Confirmar Cobro
+                            </button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary py-2 rounded-3">
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/cobros.js" asp-append-version="true"></script>
+    <script>
+        // Búsqueda de socio: reutiliza el mismo endpoint que ya usa el semáforo de Acceso.
+        document.getElementById('btnBuscarSocio').addEventListener('click', function () {
+            const ci = document.getElementById('ciSocio').value.trim();
+            const resultado = document.getElementById('nombreSocioEncontrado');
+            if (!ci) return;
+
+            fetch(`/Acceso/Verificar?ci=${encodeURIComponent(ci)}`)
+                .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+                .then(data => {
+                    resultado.textContent = `Socio encontrado: ${data.nombreCompleto}`;
+                    resultado.classList.remove('text-danger');
+                    resultado.classList.add('text-success');
+                })
+                .catch(() => {
+                    resultado.textContent = 'No se encontró ningún socio con ese CI.';
+                    resultado.classList.remove('text-success');
+                    resultado.classList.add('text-danger');
+                });
+        });
+    </script>
+}
