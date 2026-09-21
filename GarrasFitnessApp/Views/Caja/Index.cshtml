@@ -1,0 +1,41 @@
+﻿@model GarrasFitnessApp.Models.ArqueoCajaViewModel
+
+<div class="container mt-4">
+    <h2>Reporte Financiero</h2>
+    <hr />
+
+    <div class="row text-center">
+        <!-- Efectivo -->
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <h4>Efectivo</h4>
+                    <h2><span>@Model.TotalEfectivo</span> Bs.</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- QR -->
+        <div class="col-md-4">
+            <div class="card bg-info text-white shadow">
+                <div class="card-body">
+                    <h4>Código QR</h4>
+                    <h2><span>@Model.TotalQR</span> Bs.</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total -->
+        <div class="col-md-4">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <h4>Total Consolidado</h4>
+                    <h2><span>@Model.TotalGeneral</span> Bs.</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <br />
+    <a asp-controller="Caja" asp-action="ExportarPDF" class="btn btn-danger">Exportar a PDF</a>
+</div>
