@@ -1,0 +1,97 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Reporte de Caja";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Reporte de Caja - Garras Fitness App</title>
+    <style>
+            body { font-family: Arial, sans-serif; margin: 40px; color: #333; }
+            .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 15px; }
+            .header h1 { margin: 0; font-size: 22px; }
+            .header p { margin: 5px 0; color: #555; }
+            .info { margin-bottom: 25px; }
+            .info p { margin: 4px 0; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+            th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+            th { background: #f0f0f0; }
+            .totales { width: 300px; margin-left: auto; }
+            .totales td { border: none; padding: 6px 0; }
+            .totales .total { font-weight: bold; font-size: 16px; border-top: 2px solid #000; }
+            .firmas { display: flex; justify-content: space-between; margin-top: 60px; }
+            .firma { text-align: center; width: 45%; border-top: 1px solid #000; padding-top: 8px; }
+
+            @@media print {
+                body { margin: 20px; }
+                .no-print { display: none; }
+            }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Garras Fitness App</h1>
+        <p>Sistema de Control de Caja y Membresías</p>
+        <h2 style="margin-top:15px;">REPORTE DE CAJA</h2>
+    </div>
+
+    <div class="info">
+        <p><strong>Fecha:</strong> @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</p>
+        <p><strong>Generado por:</strong> Administrador</p>
+        <p><strong>Estado de Caja:</strong> Abierta</p>
+        <p><strong>Total Transacciones:</strong> 2</p>
+    </div>
+
+    <h3>Detalle de Ingresos del Día</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Socio / Concepto</th>
+                <th>Método</th>
+                <th>Monto (Bs.)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Inscripción Mensual - Juan Pérez</td>
+                <td>Efectivo</td>
+                <td>150.00</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Pago Plan Anual - María Gómez</td>
+                <td>Transferencia</td>
+                <td>1,400.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="totales">
+        <tr>
+            <td>Subtotal:</td>
+            <td style="text-align:right;">Bs. 1,550.00</td>
+        </tr>
+        <tr>
+            <td>Descuentos:</td>
+            <td style="text-align:right;">Bs. 0.00</td>
+        </tr>
+        <tr class="total">
+            <td>Total Recaudado:</td>
+            <td style="text-align:right;">Bs. 1,550.00</td>
+        </tr>
+    </table>
+
+    <div class="firmas">
+        <div class="firma">Entregado por (Cajero)</div>
+        <div class="firma">Recibido / Administrador</div>
+    </div>
+
+    <div class="no-print" style="text-align:center; margin-top:40px;">
+        <button onclick="window.print()">Imprimir de nuevo</button>
+    </div>
+</body>
+</html>
