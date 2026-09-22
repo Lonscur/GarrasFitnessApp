@@ -17,7 +17,7 @@ namespace GarrasFitnessApp.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()//xd
+        public async Task<IActionResult> Index()//xdd
         {
             var hoy = DateTime.Today;
 
