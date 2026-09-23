@@ -45,4 +45,11 @@ app.MapStaticAssets();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// ... tus configuraciones anteriores (app.UseRouting, app.UseAuthorization, etc.)
+
+// Activar el motor de exportación PDF mapeando la carpeta wwwroot
+IWebHostEnvironment env = app.Environment;
+Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "Rotativa");
+
 app.Run();
