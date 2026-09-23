@@ -4,6 +4,7 @@ using GarrasFitnessApp.Data;
 using GarrasFitnessApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
+using Rotativa.AspNetCore; // <-- AGREGADO
 
 namespace GarrasFitnessApp.Controllers
 {
@@ -17,7 +18,7 @@ namespace GarrasFitnessApp.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()//xdd
+        public async Task<IActionResult> Index()
         {
             var hoy = DateTime.Today;
 
@@ -28,13 +29,8 @@ namespace GarrasFitnessApp.Controllers
                 .Where(p => p.FechaPago.Date == hoy)
                 .ToListAsync();
 
-            decimal totalEfectivo = pagosHoy
-                .Where(p => p.MetodoPago == "Efectivo")
-                .Sum(p => p.MontoTotal);
-
-            decimal totalQR = pagosHoy
-                .Where(p => p.MetodoPago == "QR")
-                .Sum(p => p.MontoTotal);
+            decimal totalEfectivo = pagosHoy.Where(p => p.MetodoPago == "Efectivo").Sum(p => p.MontoTotal);
+            decimal totalQR = pagosHoy.Where(p => p.MetodoPago == "QR").Sum(p => p.MontoTotal);
 
             ViewBag.TotalEfectivo = totalEfectivo;
             ViewBag.TotalQR = totalQR;
@@ -60,7 +56,14 @@ namespace GarrasFitnessApp.Controllers
             ViewBag.TotalGeneral = ViewBag.TotalEfectivo + ViewBag.TotalQR;
             ViewBag.FechaArqueo = hoy.ToString("dd/MM/yyyy");
 
-            return View(pagosHoy);
+            // <-- MODIFICADO: Llama a Rotativa en lugar de View()
+            return new ViewAsPdf("ReportePdf", pagosHoy)
+            {
+                FileName = $"Arqueo_Caja_{hoy:dd_MM_yyyy}.pdf",
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                CustomSwitches = "--disable-smart-shrinking"
+            };
         }
     }
 }

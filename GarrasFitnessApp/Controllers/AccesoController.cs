@@ -5,7 +5,7 @@ using GarrasFitnessApp.Data;
 
 namespace GarrasFitnessApp.Controllers
 {
-    //[Authorize] // Solo el personal logueado (Admin/Recepción) puede usar el semáforo
+    //[Authorize] 
     public class AccesoController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -15,9 +15,7 @@ namespace GarrasFitnessApp.Controllers
             _context = context;
         }
 
-        // =======================================================
-        // 1. MUESTRA LA PANTALLA VISUAL
-        // =======================================================
+
         [HttpGet]
         public IActionResult Index()
         {
@@ -25,13 +23,11 @@ namespace GarrasFitnessApp.Controllers
             return View();
         }
 
-        // =======================================================
-        // 2. ENDPOINT DE CONSULTA (Lo llama el JS de Brunell)
-        // =======================================================
+
         [HttpGet]
         public async Task<IActionResult> Verificar(string ci)
         {
-            // 1. Buscamos al socio en la base de datos por su CI
+
             var socio = await _context.Socios.FirstOrDefaultAsync(s => s.CI == ci);
 
             // Si no existe, mandamos un error 404 para que el JS lance su alerta
