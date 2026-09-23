@@ -14,7 +14,7 @@
                 </div>
                 <div class="card-body p-4">
 
-                    <!-- Alerta de descuadre entre el total y la suma de métodos de pago -->
+                  
                     <div id="alertaDescuadre" class="d-none align-items-start gap-2 mb-3 p-3 rounded-3"
                          style="background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #B91C1C; font-size: 0.9rem;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0; margin-top:2px;">
@@ -28,7 +28,6 @@
                     <form id="formCobro" asp-controller="Pagos" asp-action="Create" method="post" novalidate>
                         @Html.AntiForgeryToken()
 
-                        <!-- Búsqueda de Socio -->
                         <div class="mb-3">
                             <label class="form-label fw-semibold" style="color: var(--primary, #111827);">Cédula del Socio (CI)</label>
                             <div class="input-group">
@@ -40,7 +39,7 @@
                             <div id="nombreSocioEncontrado" class="small text-muted mt-1"></div>
                         </div>
 
-                        <!-- Selección de Plan -->
+                       
                         <div class="mb-3">
                             <label class="form-label fw-semibold" style="color: var(--primary, #111827);">Plan de Membresía</label>
                             <select id="planSelect" name="PlanId" class="form-select" required>
@@ -52,7 +51,7 @@
                             <div class="form-text">* Precios de ejemplo, se reemplazan por los reales cuando Jhoel conecte Plan.cs</div>
                         </div>
 
-                        <!-- Promoción opcional -->
+                     
                         <div class="mb-4">
                             <label class="form-label fw-semibold" style="color: var(--primary, #111827);">Promoción (opcional)</label>
                             <select id="promoSelect" name="PromocionId" class="form-select">
@@ -76,7 +75,7 @@
                                 <span>Total a Cobrar</span>
                                 <span id="totalDisplay" style="color: var(--accent, #F97316);">Bs. 0.00</span>
                             </div>
-                            <!-- Este es el único valor que realmente se envía al servidor; lo calcula cobros.js -->
+                         
                             <input type="hidden" id="MontoTotal" name="MontoTotal" value="0" />
                         </div>
 
@@ -118,7 +117,7 @@
 @section Scripts {
     <script src="~/js/cobros.js" asp-append-version="true"></script>
     <script>
-        // Búsqueda de socio: reutiliza el mismo endpoint que ya usa el semáforo de Acceso.
+      
         document.getElementById('btnBuscarSocio').addEventListener('click', function () {
             const ci = document.getElementById('ciSocio').value.trim();
             const resultado = document.getElementById('nombreSocioEncontrado');

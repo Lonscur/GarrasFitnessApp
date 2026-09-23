@@ -58,7 +58,7 @@ namespace GarrasFitnessApp.Controllers
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                 new Claim(ClaimTypes.Name, usuario.NombreCompleto),
                 new Claim(ClaimTypes.Email, usuario.Correo),
-                new Claim(ClaimTypes.Role, usuario.Rol.Nombre) // Saca "Administrador" o "Recepcionista"
+                new Claim(ClaimTypes.Role, usuario.Rol.Nombre) 
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

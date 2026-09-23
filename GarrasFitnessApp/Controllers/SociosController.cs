@@ -24,7 +24,7 @@ namespace GarrasFitnessApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Socio socio)
         {
-            // Consulta LINQ para verificar si el CI ya existe en la base de datos
+       
             bool ciExiste = await _context.Socios.AnyAsync(s => s.CI == socio.CI);
 
             if (ciExiste)

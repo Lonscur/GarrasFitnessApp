@@ -56,7 +56,7 @@ namespace GarrasFitnessApp.Controllers
             ViewBag.TotalGeneral = ViewBag.TotalEfectivo + ViewBag.TotalQR;
             ViewBag.FechaArqueo = hoy.ToString("dd/MM/yyyy");
 
-            // <-- MODIFICADO: Llama a Rotativa en lugar de View()
+           
             return new ViewAsPdf("ReportePdf", pagosHoy)
             {
                 FileName = $"Arqueo_Caja_{hoy:dd_MM_yyyy}.pdf",
