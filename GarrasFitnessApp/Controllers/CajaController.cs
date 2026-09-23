@@ -4,7 +4,7 @@ using GarrasFitnessApp.Data;
 using GarrasFitnessApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
-using Rotativa.AspNetCore; // <-- AGREGADO
+using Rotativa.AspNetCore; 
 
 namespace GarrasFitnessApp.Controllers
 {
