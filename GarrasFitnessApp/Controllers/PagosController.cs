@@ -20,11 +20,8 @@ namespace GarrasFitnessApp.Controllers
 
         public IActionResult Create()
         {
-            // Cargar datos para los DropDownLists en la vista de Brunell
             ViewData["SocioId"] = new SelectList(_context.Socios, "Id", "NombreCompleto");
             ViewData["PlanId"] = new SelectList(_context.Planes, "Id", "Nombre");
-
-            // Solo envia promociones que estén vigentes el día de hoy
             var promocionesVigentes = _context.Promociones
                 .Where(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today)
                 .ToList();
@@ -37,7 +34,6 @@ namespace GarrasFitnessApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("SocioId,PlanId,PromocionId,MetodoPago")] Pago pago)
         {
-            // Obtener la información del Plan y la Promoción seleccionada
             var plan = await _context.Planes.FindAsync(pago.PlanId);
             var promocion = pago.PromocionId.HasValue ? await _context.Promociones.FindAsync(pago.PromocionId) : null;
             var socio = await _context.Socios.FindAsync(pago.SocioId);
@@ -49,12 +45,10 @@ namespace GarrasFitnessApp.Controllers
                 return View(pago);
             }
 
-            // Calculo monto total
             decimal descuento = promocion != null ? promocion.Descuento : 0;
             pago.MontoTotal = Math.Max(0, plan.PrecioBase - descuento);
             pago.FechaPago = DateTime.Now;
 
-            // Capturar el ID del Usuario
             var userIdClaim = User.FindFirst("Id");
             if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int usuarioId))
             {
