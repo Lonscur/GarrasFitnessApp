@@ -2,38 +2,34 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
-using GarrasFitnessApp.Data;
+using System.Text.Json;
+using System.Text;
 using GarrasFitnessApp.Models;
-using BCrypt.Net;
 
 namespace GarrasFitnessApp.Controllers
 {
     public class AuthController : Controller
     {
+        private readonly HttpClient _httpClient;
+        private readonly JsonSerializerOptions _jsonOptions;
 
-        private readonly ApplicationDbContext _context;
-
- 
-        public AuthController(ApplicationDbContext context)
+        public AuthController(IHttpClientFactory httpClientFactory)
         {
-            _context = context;
+            _httpClient = httpClientFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri("https://localhost:7286/");
+            _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
-
 
         [HttpGet]
         public IActionResult Login()
         {
-
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
-
             return View();
         }
 
- 
         [HttpPost]
         public async Task<IActionResult> Login(string correo, string contrasena)
         {
@@ -43,22 +39,26 @@ namespace GarrasFitnessApp.Controllers
                 return View();
             }
 
-            var usuario = await _context.Usuarios
-                .Include(u => u.Rol)
-                .FirstOrDefaultAsync(u => u.Correo == correo);
+            var requestData = new { Correo = correo, Contrasena = contrasena };
+            var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
 
-            if (usuario == null || !BCrypt.Net.BCrypt.Verify(contrasena, usuario.Contrasena))
+            var response = await _httpClient.PostAsync("api/AuthApi/Login", content);
+
+            if (!response.IsSuccessStatusCode)
             {
                 ViewBag.Error = "Correo o contraseña incorrectos.";
                 return View();
             }
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var usuario = JsonSerializer.Deserialize<Usuario>(jsonString, _jsonOptions);
 
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                 new Claim(ClaimTypes.Name, usuario.NombreCompleto),
                 new Claim(ClaimTypes.Email, usuario.Correo),
-                new Claim(ClaimTypes.Role, usuario.Rol.Nombre) 
+                new Claim(ClaimTypes.Role, usuario.Rol?.Nombre ?? "Usuario")
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -69,12 +69,10 @@ namespace GarrasFitnessApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
             return RedirectToAction("Login", "Auth");
         }
     }

@@ -1,17 +1,18 @@
-﻿using GarrasFitnessApp.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using GarrasFitnessApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Text;
 
 namespace GarrasFitnessApp.Controllers
 {
     public class SociosController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly HttpClient _httpClient;
 
-        public SociosController(ApplicationDbContext context)
+        public SociosController(IHttpClientFactory httpClientFactory)
         {
-            _context = context;
+            _httpClient = httpClientFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri("https://localhost:7286/");
         }
 
         [HttpGet]
@@ -24,19 +25,19 @@ namespace GarrasFitnessApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Socio socio)
         {
-       
-            bool ciExiste = await _context.Socios.AnyAsync(s => s.CI == socio.CI);
+            if (!ModelState.IsValid) return View(socio);
 
-            if (ciExiste)
+            var content = new StringContent(JsonSerializer.Serialize(socio), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("api/SociosApi", content);
+
+            if (response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError("CI", "El número de CI ya se encuentra registrado.");
+                return RedirectToAction(nameof(Create));
             }
 
-            if (ModelState.IsValid)
+            if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
             {
-                _context.Add(socio);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Create));
+                ModelState.AddModelError("CI", "El número de CI ya se encuentra registrado.");
             }
 
             return View(socio);

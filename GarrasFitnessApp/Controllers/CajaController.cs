@@ -1,60 +1,55 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GarrasFitnessApp.Data;
 using GarrasFitnessApp.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Linq;
+using System.Text.Json;
 
 namespace GarrasFitnessApp.Controllers
 {
     public class CajaController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly HttpClient _httpClient;
+        private readonly JsonSerializerOptions _jsonOptions;
 
-        public CajaController(ApplicationDbContext context)
+        public CajaController(IHttpClientFactory httpClientFactory)
         {
-            _context = context;
+            _httpClient = httpClientFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri("https://localhost:7286/");
+            _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
         public async Task<IActionResult> Index()
         {
-            var hoy = DateTime.Today;
-
-            var pagosHoy = await _context.Pagos
-                .Include(p => p.Socio)
-                .Include(p => p.Plan)
-                .Include(p => p.Usuario)
-                .Where(p => p.FechaPago.Date == hoy)
-                .ToListAsync();
-
-            decimal totalEfectivo = pagosHoy.Where(p => p.MetodoPago == "Efectivo").Sum(p => p.MontoTotal);
-            decimal totalQR = pagosHoy.Where(p => p.MetodoPago == "QR").Sum(p => p.MontoTotal);
-
-            ViewBag.TotalEfectivo = totalEfectivo;
-            ViewBag.TotalQR = totalQR;
-            ViewBag.TotalGeneral = totalEfectivo + totalQR;
-            ViewBag.FechaArqueo = hoy.ToString("dd/MM/yyyy");
-
+            var pagosHoy = await ObtenerPagosHoyAsync();
+            CalcularTotales(pagosHoy);
             return View(pagosHoy);
         }
 
         public async Task<IActionResult> ReportePdf()
         {
-            var hoy = DateTime.Today;
-
-            var pagosHoy = await _context.Pagos
-                .Include(p => p.Socio)
-                .Include(p => p.Plan)
-                .Include(p => p.Usuario)
-                .Where(p => p.FechaPago.Date == hoy)
-                .ToListAsync();
-
-            ViewBag.TotalEfectivo = pagosHoy.Where(p => p.MetodoPago == "Efectivo").Sum(p => p.MontoTotal);
-            ViewBag.TotalQR = pagosHoy.Where(p => p.MetodoPago == "QR").Sum(p => p.MontoTotal);
-            ViewBag.TotalGeneral = ViewBag.TotalEfectivo + ViewBag.TotalQR;
-            ViewBag.FechaArqueo = hoy.ToString("dd/MM/yyyy");
-
+            var pagosHoy = await ObtenerPagosHoyAsync();
+            CalcularTotales(pagosHoy);
             return View(pagosHoy);
+        }
+
+        private async Task<List<Pago>> ObtenerPagosHoyAsync()
+        {
+            var response = await _httpClient.GetAsync("api/CajaApi/PagosHoy");
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<Pago>>(jsonString, _jsonOptions) ?? new List<Pago>();
+            }
+            return new List<Pago>();
+        }
+
+        private void CalcularTotales(List<Pago> pagos)
+        {
+            decimal totalEfectivo = pagos.Where(p => p.MetodoPago == "Efectivo").Sum(p => p.MontoTotal);
+            decimal totalQR = pagos.Where(p => p.MetodoPago == "QR").Sum(p => p.MontoTotal);
+
+            ViewBag.TotalEfectivo = totalEfectivo;
+            ViewBag.TotalQR = totalQR;
+            ViewBag.TotalGeneral = totalEfectivo + totalQR;
+            ViewBag.FechaArqueo = DateTime.Today.ToString("dd/MM/yyyy");
         }
     }
 }
