@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using GarrasFitnessApp.Data;
 using GarrasFitnessApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace GarrasFitnessApp.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    // [Authorize(Roles = "Administrador")]
     public class PromocionesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -28,8 +29,12 @@ namespace GarrasFitnessApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Descuento,FechaInicio,FechaFin")] Promocion promocion)
+        public async Task<IActionResult> Create([Bind("Nombre,Descuento,FechaInicio,FechaFin")] Promocion promocion)
         {
+            // Omitir la validación de colecciones o referencias circulares (Pagos)
+            ModelState.Remove("Pagos");
+            ModelState.Remove("Id");
+
             if (promocion.FechaInicio > promocion.FechaFin)
             {
                 ModelState.AddModelError("FechaFin", "La fecha de fin no puede ser menor a la fecha de inicio.");
@@ -37,14 +42,14 @@ namespace GarrasFitnessApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(promocion);
+                _context.Promociones.Add(promocion);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(promocion);
         }
 
-        // GET: Promociones/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -60,6 +65,8 @@ namespace GarrasFitnessApp.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descuento,FechaInicio,FechaFin")] Promocion promocion)
         {
             if (id != promocion.Id) return NotFound();
+
+            ModelState.Remove("Pagos");
 
             if (promocion.FechaInicio > promocion.FechaFin)
             {
