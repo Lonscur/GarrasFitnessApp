@@ -50,6 +50,6 @@ app.MapControllerRoute(
 
 // Activar el motor de exportación PDF mapeando la carpeta wwwroot
 IWebHostEnvironment env = app.Environment;
-Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "Rotativa");
+//Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "Rotativa");
 
 app.Run();

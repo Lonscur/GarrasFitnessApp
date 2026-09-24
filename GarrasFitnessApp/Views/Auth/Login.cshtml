@@ -14,10 +14,10 @@
 
     <style>
             :root {
-                --primary: #111827; 
-                --accent: #F97316; 
-                --accent-hover: #EA580C; 
-                --bg-light: #F8FAFC; 
+                --primary: #111827;
+                --accent: #F97316;
+                --accent-hover: #EA580C;
+                --bg-light: #F8FAFC;
                 --card-bg: #FFFFFF;
                 --border-soft: #E2E8F0;
                 --danger-bg: #FEF2F2;
@@ -74,6 +74,17 @@
                     height: 34px;
                 }
 
+            /* ============================================================
+                       NUEVO: Logo real desde wwwroot/img/logo-garras.png
+                       ============================================================ */
+            .logo-img {
+                height: 90px;
+                width: auto;
+                display: block;
+                margin-bottom: 14px;
+                filter: drop-shadow(0 6px 12px rgba(17, 24, 39, 0.15));
+            }
+
             .logo-title {
                 font-family: var(--font-heading);
                 font-weight: 900;
@@ -94,7 +105,6 @@
                 text-align: center;
             }
 
-         
             .login-card {
                 background-color: var(--card-bg);
                 border: 1px solid var(--border-soft);
@@ -103,7 +113,6 @@
                 box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
             }
 
-     
             .alert-garras {
                 display: flex;
                 gap: 10px;
@@ -125,7 +134,6 @@
                     margin-top: 1px;
                 }
 
-       
             .form-group {
                 margin-bottom: 18px;
             }
@@ -190,7 +198,6 @@
                 .forgot-password:hover {
                     text-decoration: underline;
                 }
-
 
             .btn-login {
                 width: 100%;
@@ -288,13 +295,25 @@
 
     <div class="login-container">
 
- 
+        <!-- ============================================================
+             MODIFICADO: Se reemplazó el SVG inline por el logo real
+             Si la imagen no carga, se muestra el SVG como respaldo
+             ============================================================ -->
         <div class="logo-wrap">
-            <div class="logo-badge">
+
+            <img src="~/img/logo-garras.png"
+                 alt="Garras Fitness Club"
+                 class="logo-img"
+                 onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';" />
+
+            <div id="logo-fallback" class="logo-badge" style="display:none;">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 9v6M2 10v4M22 10v4M20 9v6M7 8v8M17 8v8M7 12h10" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M4 9v6M2 10v4M22 10v4M20 9v6M7 8v8M17 8v8M7 12h10"
+                          stroke="#F97316" stroke-width="2"
+                          stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
+
             <div class="logo-title">GARRAS <span>FITNESS</span> CLUB</div>
             <div class="logo-subtitle">Control de Acceso y Gestión</div>
         </div>
