@@ -1,14 +1,16 @@
-﻿@{
+﻿@model IEnumerable<GarrasFitnessApp.Models.Pago>
+@{
     ViewData["Title"] = "Panel Administrador - Caja";
+    int contador = 1;
 }
 
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="mb-1">Panel Administrador - Control de Caja</h2>
-            <p class="text-muted mb-0">Gestión de ingresos, pagos y transacciones del día.</p>
+            <p class="text-muted mb-0">Gestión de ingresos, pagos y transacciones del día (@ViewBag.FechaArqueo).</p>
         </div>
-        <a href="#" class="btn btn-outline-primary">
+        <a asp-action="ReportePdf" class="btn btn-outline-primary" target="_blank">
             <i class="bi bi-printer"></i> Imprimir Reporte PDF
         </a>
     </div>
@@ -19,7 +21,7 @@
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
                         <h6 class="text-muted mb-1">Ingresos Totales (Hoy)</h6>
-                        <h3 class="mb-0 text-success">Bs. 1,550.00</h3>
+                        <h3 class="mb-0 text-success">Bs. @Convert.ToDecimal(ViewBag.TotalGeneral).ToString("F2")</h3>
                     </div>
                     <i class="bi bi-cash-stack fs-3 text-success"></i>
                 </div>
@@ -29,8 +31,8 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="text-muted mb-1">Membresías Registradas</h6>
-                        <h3 class="mb-0 text-primary">12</h3>
+                        <h6 class="text-muted mb-1">Pagos Registrados</h6>
+                        <h3 class="mb-0 text-primary">@Model.Count()</h3>
                     </div>
                     <i class="bi bi-people fs-3 text-primary"></i>
                 </div>
@@ -40,10 +42,11 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="text-muted mb-1">Estado de Caja</h6>
-                        <h3 class="mb-0 text-success">Abierta</h3>
+                        <h6 class="text-muted mb-1">Desglose Efectivo / QR</h6>
+                        <small class="d-block text-muted">Efectivo: <strong>Bs. @Convert.ToDecimal(ViewBag.TotalEfectivo).ToString("F2")</strong></small>
+                        <small class="d-block text-muted">QR: <strong>Bs. @Convert.ToDecimal(ViewBag.TotalQR).ToString("F2")</strong></small>
                     </div>
-                    <i class="bi bi-unlock fs-3 text-success"></i>
+                    <i class="bi bi-wallet2 fs-3 text-info"></i>
                 </div>
             </div>
         </div>
@@ -68,20 +71,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Inscripción Mensual - Juan Pérez</td>
-                        <td><span class="badge bg-success">Efectivo</span></td>
-                        <td>@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td class="text-end">Bs. 150.00</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Pago Plan Anual - María Gómez</td>
-                        <td><span class="badge bg-info">Transferencia</span></td>
-                        <td>@DateTime.Now.AddHours(-1).ToString("dd/MM/yyyy HH:mm")</td>
-                        <td class="text-end">Bs. 1,400.00</td>
-                    </tr>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">No se han registrado pagos en la fecha de hoy.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var pago in Model)
+                        {
+                            <tr>
+                                <td>@contador</td>
+                                <td>@(pago.Plan?.Nombre ?? "Plan") - @(pago.Socio?.NombreCompleto ?? "Sin Socio")</td>
+                                <td>
+                                    <span class="badge @(pago.MetodoPago == "Efectivo" ? "bg-success" : "bg-info")">
+                                        @pago.MetodoPago
+                                    </span>
+                                </td>
+                                <td>@pago.FechaPago.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td class="text-end">Bs. @pago.MontoTotal.ToString("F2")</td>
+                            </tr>
+                            contador++;
+                        }
+                    }
                 </tbody>
             </table>
         </div>

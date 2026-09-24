@@ -4,11 +4,9 @@ using GarrasFitnessApp.Data;
 using GarrasFitnessApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
-using Rotativa.AspNetCore; 
 
 namespace GarrasFitnessApp.Controllers
 {
-    [Authorize(Roles = "Administrador")]
     public class CajaController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -56,14 +54,7 @@ namespace GarrasFitnessApp.Controllers
             ViewBag.TotalGeneral = ViewBag.TotalEfectivo + ViewBag.TotalQR;
             ViewBag.FechaArqueo = hoy.ToString("dd/MM/yyyy");
 
-           
-            return new ViewAsPdf("ReportePdf", pagosHoy)
-            {
-                FileName = $"Arqueo_Caja_{hoy:dd_MM_yyyy}.pdf",
-                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
-                PageSize = Rotativa.AspNetCore.Options.Size.A4,
-                CustomSwitches = "--disable-smart-shrinking"
-            };
+            return View(pagosHoy);
         }
     }
 }
