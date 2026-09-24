@@ -1,8 +1,184 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- ==================== HERO ==================== -->
+<div class="container">
+    <div class="text-center py-5">
+        <h1 class="display-4 fw-bold" style="font-family:'Montserrat',sans-serif;">
+            Bienvenido a <span style="color:#F97316;">Garras Fitness Club</span>
+        </h1>
+        <p class="lead text-muted">Tu mejor versión empieza hoy.</p>
+        <a class="btn btn-lg text-white fw-bold mt-3"
+           style="background-color:#F97316;"
+           asp-controller="Socios" asp-action="Create">
+            Inscribirme ahora
+        </a>
+    </div>
 </div>
+
+<!-- ==================== 3 TARJETAS DEL GYM ==================== -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 text-center">
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4">
+                    <i class="bi bi-lightning-charge-fill fs-1" style="color:#F97316;"></i>
+                    <h4 class="mt-3 fw-bold" style="font-family:'Montserrat',sans-serif;">
+                        Entrenadores Pro
+                    </h4>
+                    <p class="text-muted mb-0">
+                        Rutinas personalizadas según tu objetivo. Te acompañamos en cada repetición.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4">
+                    <i class="bi bi-heart-pulse-fill fs-1" style="color:#F97316;"></i>
+                    <h4 class="mt-3 fw-bold" style="font-family:'Montserrat',sans-serif;">
+                        Equipos Modernos
+                    </h4>
+                    <p class="text-muted mb-0">
+                        Máquinas de última generación siempre disponibles para que no pierdas tiempo.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4">
+                    <i class="bi bi-people-fill fs-1" style="color:#F97316;"></i>
+                    <h4 class="mt-3 fw-bold" style="font-family:'Montserrat',sans-serif;">
+                        Comunidad
+                    </h4>
+                    <p class="text-muted mb-0">
+                        Entrena rodeado de gente que te motiva. Aquí nadie entrena solo.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ==================== ESTADÍSTICAS ==================== -->
+<section class="py-5" style="background-color:#111827; color:white;">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-6 col-md-3">
+                <h2 class="display-5 fw-bold" style="color:#F97316; font-family:'Montserrat',sans-serif;">+250</h2>
+                <p class="text-uppercase small mb-0">Socios activos</p>
+            </div>
+            <div class="col-6 col-md-3">
+                <h2 class="display-5 fw-bold" style="color:#F97316; font-family:'Montserrat',sans-serif;">12</h2>
+                <p class="text-uppercase small mb-0">Entrenadores</p>
+            </div>
+            <div class="col-6 col-md-3">
+                <h2 class="display-5 fw-bold" style="color:#F97316; font-family:'Montserrat',sans-serif;">50+</h2>
+                <p class="text-uppercase small mb-0">Máquinas</p>
+            </div>
+            <div class="col-6 col-md-3">
+                <h2 class="display-5 fw-bold" style="color:#F97316; font-family:'Montserrat',sans-serif;">24/7</h2>
+                <p class="text-uppercase small mb-0">Acceso</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PLANES ==================== -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold" style="font-family:'Montserrat',sans-serif;">
+                Nuestros <span style="color:#F97316;">Planes</span>
+            </h2>
+            <p class="text-muted">Elige el que mejor se adapte a ti.</p>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Plan Básico -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center p-4">
+                    <h5 class="fw-bold text-uppercase" style="color:#111827;">Básico</h5>
+                    <h2 class="display-5 fw-bold my-3" style="color:#F97316; font-family:'Montserrat',sans-serif;">
+                        Bs. 150
+                    </h2>
+                    <p class="text-muted small">por mes</p>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Acceso al área de pesas</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Vestidores</li>
+                        <li class="mb-2 text-muted"><i class="bi bi-x-circle me-2"></i>Clases grupales</li>
+                        <li class="mb-2 text-muted"><i class="bi bi-x-circle me-2"></i>Entrenador personal</li>
+                    </ul>
+                    <a asp-controller="Socios" asp-action="Create"
+                       class="btn fw-bold mt-3"
+                       style="border: 2px solid #F97316; color:#F97316;">
+                        Elegir Básico
+                    </a>
+                </div>
+            </div>
+
+            <!-- Plan Pro (destacado) -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow h-100 text-center p-4 position-relative"
+                     style="border-top: 5px solid #F97316 !important;">
+                    <span class="badge position-absolute top-0 start-50 translate-middle"
+                          style="background-color:#F97316;">MÁS POPULAR</span>
+                    <h5 class="fw-bold text-uppercase mt-3" style="color:#111827;">Pro</h5>
+                    <h2 class="display-5 fw-bold my-3" style="color:#F97316; font-family:'Montserrat',sans-serif;">
+                        Bs. 250
+                    </h2>
+                    <p class="text-muted small">por mes</p>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Todo lo del plan Básico</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Clases grupales ilimitadas</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Acceso a zona cardio</li>
+                        <li class="mb-2 text-muted"><i class="bi bi-x-circle me-2"></i>Entrenador personal</li>
+                    </ul>
+                    <a asp-controller="Socios" asp-action="Create"
+                       class="btn fw-bold mt-3 text-white"
+                       style="background-color:#F97316;">
+                        Elegir Pro
+                    </a>
+                </div>
+            </div>
+
+            <!-- Plan Premium -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center p-4">
+                    <h5 class="fw-bold text-uppercase" style="color:#111827;">Premium</h5>
+                    <h2 class="display-5 fw-bold my-3" style="color:#F97316; font-family:'Montserrat',sans-serif;">
+                        Bs. 400
+                    </h2>
+                    <p class="text-muted small">por mes</p>
+                    <ul class="list-unstyled text-start mt-3">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Todo lo del plan Pro</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Entrenador personal</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Plan nutricional</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Acceso 24/7</li>
+                    </ul>
+                    <a asp-controller="Socios" asp-action="Create"
+                       class="btn fw-bold mt-3"
+                       style="border: 2px solid #F97316; color:#F97316;">
+                        Elegir Premium
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA FINAL ==================== -->
+<section class="py-5 text-center text-white" style="background-color:#F97316;">
+    <div class="container">
+        <h2 class="fw-bold" style="font-family:'Montserrat',sans-serif;">¿Listo para empezar?</h2>
+        <p class="lead mb-4">Inscríbete hoy y obtén tu primera semana gratis.</p>
+        <a class="btn btn-lg btn-light fw-bold"
+           asp-controller="Socios" asp-action="Create">
+            Quiero ser socio
+        </a>
+    </div>
+</section>

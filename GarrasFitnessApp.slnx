@@ -1,4 +1,6 @@
 <Solution>
-  <Project Path="GarrasFitnessAPI/GarrasFitnessAPI.csproj" Id="10d48d68-377a-4afd-9492-05b3a2f5f12a" />
+  <Project Path="GarrasFitnessAPI/GarrasFitnessAPI.csproj" Id="10d48d68-377a-4afd-9492-05b3a2f5f12a">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
   <Project Path="GarrasFitnessApp/GarrasFitnessApp.csproj" />
 </Solution>
