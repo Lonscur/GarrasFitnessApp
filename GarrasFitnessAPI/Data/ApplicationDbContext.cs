@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using GarrasFitnessApp.Models;
+﻿using GarrasFitnessAPI.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
-namespace GarrasFitnessApp.Data
+namespace GarrasFitnessAPI.Data
 {
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-
 
         public DbSet<Rol> Roles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }

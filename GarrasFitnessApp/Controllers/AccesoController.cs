@@ -1,55 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using GarrasFitnessApp.Data;
 
 namespace GarrasFitnessApp.Controllers
 {
-    //[Authorize] 
     public class AccesoController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly HttpClient _httpClient;
 
-        public AccesoController(ApplicationDbContext context)
+        public AccesoController(IHttpClientFactory httpClientFactory)
         {
-            _context = context;
+            _httpClient = httpClientFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri("https://localhost:7286/");
         }
-
 
         [HttpGet]
         public IActionResult Index()
         {
-     
             return View();
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Verificar(string ci)
         {
+            var response = await _httpClient.GetAsync($"api/AccesoApi/Verificar/{ci}");
 
-            var socio = await _context.Socios.FirstOrDefaultAsync(s => s.CI == ci);
-
-
-            if (socio == null)
+            if (response.IsSuccessStatusCode)
             {
-                return NotFound();
+                var result = await response.Content.ReadAsStringAsync();
+                return Content(result, "application/json");
             }
 
-            var hoy = DateTime.Today;
-            bool esValido = socio.FechaVencimiento.Date >= hoy;
-
-
-            int diasVencido = esValido ? 0 : (hoy - socio.FechaVencimiento.Date).Days;
-
- 
-            return Json(new
-            {
-                nombreCompleto = socio.NombreCompleto,
-                esValido = esValido,
-                fechaVencimiento = socio.FechaVencimiento.ToString("dd/MM/yyyy"),
-                diasVencido = diasVencido
-            });
+            return NotFound();
         }
     }
 }

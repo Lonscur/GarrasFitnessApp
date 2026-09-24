@@ -1,25 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GarrasFitnessApp.Data;
 using GarrasFitnessApp.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text;
 
 namespace GarrasFitnessApp.Controllers
 {
-    // [Authorize(Roles = "Administrador")]
     public class PromocionesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly HttpClient _httpClient;
+        private readonly JsonSerializerOptions _jsonOptions;
 
-        public PromocionesController(ApplicationDbContext context)
+        public PromocionesController(IHttpClientFactory httpClientFactory)
         {
-            _context = context;
+            _httpClient = httpClientFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri("https://localhost:7286/");
+            _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Promociones.ToListAsync());
+            var response = await _httpClient.GetAsync("api/PromocionesApi");
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var promociones = JsonSerializer.Deserialize<IEnumerable<Promocion>>(jsonString, _jsonOptions);
+                return View(promociones);
+            }
+            return View(new List<Promocion>());
         }
 
         public IActionResult Create()
@@ -31,81 +38,19 @@ namespace GarrasFitnessApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Nombre,Descuento,FechaInicio,FechaFin")] Promocion promocion)
         {
-            // Omitir la validación de colecciones o referencias circulares (Pagos)
             ModelState.Remove("Pagos");
             ModelState.Remove("Id");
 
             if (promocion.FechaInicio > promocion.FechaFin)
-            {
                 ModelState.AddModelError("FechaFin", "La fecha de fin no puede ser menor a la fecha de inicio.");
-            }
 
             if (ModelState.IsValid)
             {
-                _context.Promociones.Add(promocion);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(promocion);
-        }
-
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var promocion = await _context.Promociones.FindAsync(id);
-            if (promocion == null) return NotFound();
-
-            return View(promocion);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descuento,FechaInicio,FechaFin")] Promocion promocion)
-        {
-            if (id != promocion.Id) return NotFound();
-
-            ModelState.Remove("Pagos");
-
-            if (promocion.FechaInicio > promocion.FechaFin)
-            {
-                ModelState.AddModelError("FechaFin", "La fecha de fin no puede ser menor a la de inicio.");
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(promocion);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PromocionExists(promocion.Id)) return NotFound();
-                    else throw;
-                }
-                return RedirectToAction(nameof(Index));
+                var content = new StringContent(JsonSerializer.Serialize(promocion), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("api/PromocionesApi", content);
+                if (response.IsSuccessStatusCode) return RedirectToAction(nameof(Index));
             }
             return View(promocion);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var promocion = await _context.Promociones.FindAsync(id);
-            if (promocion != null)
-            {
-                _context.Promociones.Remove(promocion);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool PromocionExists(int id)
-        {
-            return _context.Promociones.Any(e => e.Id == id);
         }
     }
 }
