@@ -30,6 +30,28 @@ namespace GarrasFitnessAPI.Controllers
 
             return Ok(usuario);
         }
+
+        [HttpGet("CrearAdminInicial")]
+        public async Task<IActionResult> CrearAdminInicial()
+        {
+            if (_context.Usuarios.Any())
+            {
+                return BadRequest("La base de datos ya tiene usuarios registrados.");
+            }
+
+            var admin = new Usuario
+            {
+                NombreCompleto = "Administrador Master",
+                Correo = "admin@garras.com",
+                Contrasena = BCrypt.Net.BCrypt.HashPassword("123456"),
+                RolId = 1
+            };
+
+            _context.Usuarios.Add(admin);
+            await _context.SaveChangesAsync();
+
+            return Ok("Usuario Administrador inyectado con éxito. Ya puedes iniciar sesión.");
+        }
     }
 
     public class LoginRequest
