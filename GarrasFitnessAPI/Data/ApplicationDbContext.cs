@@ -16,5 +16,6 @@ namespace GarrasFitnessAPI.Data
         public DbSet<Plan> Planes { get; set; }
         public DbSet<Promocion> Promociones { get; set; }
         public DbSet<Pago> Pagos { get; set; }
+        public DbSet<Asistencia> Asistencias { get; set; }
     }
 }
