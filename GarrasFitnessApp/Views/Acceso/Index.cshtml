@@ -9,31 +9,393 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <style>
+            :root {
+                --primary: #111827;
+                --accent: #F97316;
+                --accent-hover: #EA580C;
+                --success: #16A34A;
+                --danger: #DC2626;
+                --bg-dark: #0B1220;
+                --text-muted: #94A3B8;
+                --font-heading: 'Montserrat', sans-serif;
+                --font-body: 'Inter', sans-serif;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+
+            body {
+                font-family: var(--font-body);
+                overflow: hidden;
+            }
+
+            /* ===== PANTALLA PRINCIPAL ===== */
+            #pantallaSemaforo {
+                background: radial-gradient(circle at 20% 0%, rgba(249, 115, 22, 0.10), transparent 45%), radial-gradient(circle at 80% 100%, rgba(249, 115, 22, 0.08), transparent 50%), var(--bg-dark);
+                transition: background 0.45s ease, background-color 0.45s ease;
+                min-height: 100vh;
+                padding: 24px;
+                position: relative;
+            }
+
+            /* ===== CABECERA ===== */
+            .brand-logo {
+                height: 60px;
+                width: auto;
+                display: block;
+                margin: 0 auto 10px;
+                filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.45));
+            }
+
+            .brand-title {
+                font-family: var(--font-heading);
+                font-weight: 900;
+                font-size: 30px;
+                letter-spacing: 1.5px;
+                color: #FFFFFF;
+                line-height: 1.1;
+                margin: 0;
+            }
+
+                .brand-title span {
+                    color: var(--accent);
+                }
+
+            .brand-subtitle {
+                color: var(--text-muted);
+                font-size: 13px;
+                letter-spacing: 0.4px;
+                margin-top: 4px;
+            }
+
+            /* ===== CARD DE INGRESO (MÁS COMPACTA) ===== */
+            .access-card {
+                background-color: #FFFFFF;
+                border-radius: 16px;
+                padding: 22px 22px 24px; /* Reducido de 32px → 22px */
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.05);
+                max-width: 420px; /* Reducido de 520px → 420px */
+                width: 100%;
+                animation: fadeIn 0.35s ease-out;
+            }
+
+            @@keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(8px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .field-label {
+                display: block;
+                text-align: center;
+                font-size: 11px; /* Más pequeño */
+                font-weight: 700;
+                letter-spacing: 0.8px;
+                text-transform: uppercase;
+                color: #475569;
+                margin-bottom: 10px;
+            }
+
+            #inputCI {
+                width: 100%;
+                padding: 12px 14px; /* Reducido de 16px → 12px */
+                font-family: var(--font-heading);
+                font-size: 20px; /* Reducido de 26px → 20px */
+                font-weight: 700;
+                text-align: center;
+                letter-spacing: 3px;
+                color: var(--primary);
+                background-color: #F8FAFC;
+                border: 2px solid #E2E8F0;
+                border-radius: 10px;
+                outline: none;
+                transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            }
+
+                #inputCI::placeholder {
+                    color: #CBD5E1;
+                    letter-spacing: 2px;
+                    font-weight: 600;
+                    font-size: 16px;
+                }
+
+                #inputCI:focus {
+                    border-color: var(--accent);
+                    background-color: #FFFFFF;
+                    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.18);
+                }
+
+            /* ===== ALERTA DE ERROR ===== */
+            #alertaError {
+                display: none;
+                align-items: flex-start;
+                gap: 10px;
+                margin-top: 14px;
+                padding: 10px 12px;
+                border-radius: 10px;
+                background-color: #FEF2F2;
+                border: 1px solid #FCA5A5;
+                color: #B91C1C;
+                font-size: 12.5px;
+                text-align: left;
+                line-height: 1.4;
+            }
+
+                #alertaError.d-flex {
+                    display: flex;
+                }
+
+            /* ===== BOTÓN ===== */
+            #btnVerificar {
+                width: 100%;
+                margin-top: 14px;
+                padding: 12px; /* Reducido */
+                border: none;
+                border-radius: 10px;
+                background: linear-gradient(135deg, var(--accent) 0%, #F97316 100%);
+                color: #FFFFFF;
+                font-family: var(--font-heading);
+                font-size: 14px;
+                font-weight: 800;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease;
+                box-shadow: 0 10px 24px rgba(249, 115, 22, 0.35);
+            }
+
+                #btnVerificar:hover {
+                    background: linear-gradient(135deg, var(--accent-hover) 0%, #EA580C 100%);
+                    box-shadow: 0 14px 30px rgba(249, 115, 22, 0.45);
+                }
+
+                #btnVerificar:active {
+                    transform: scale(0.985);
+                }
+
+            /* ============================================================
+                       RESULTADO: SUPERPUESTO Y CENTRADO EN LA PANTALLA
+                       ============================================================ */
+            #resultadoOverlay {
+                position: fixed;
+                inset: 0;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                padding: 24px;
+                background-color: rgba(0, 0, 0, 0.55);
+                backdrop-filter: blur(4px);
+                animation: fadeIn 0.25s ease-out;
+            }
+
+                #resultadoOverlay.visible {
+                    display: flex;
+                }
+
+            #resultadoAcceso {
+                padding: 44px 40px;
+                border-radius: 24px;
+                text-align: center;
+                color: #FFFFFF;
+                max-width: 620px;
+                width: 100%;
+                box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+                animation: popIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            @@keyframes popIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.9);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            .result-icon {
+                width: 96px;
+                height: 96px;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 22px;
+                font-size: 52px;
+                font-weight: 900;
+                line-height: 1;
+            }
+
+            #mensajeEstado {
+                font-family: var(--font-heading);
+                font-size: 40px;
+                font-weight: 900;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                margin-bottom: 12px;
+                line-height: 1.1;
+            }
+
+            #detalleSocio {
+                font-size: 22px;
+                font-weight: 600;
+                opacity: 0.95;
+                margin-bottom: 8px;
+            }
+
+            #diasMorosidad {
+                font-size: 16px;
+                opacity: 0.85;
+                line-height: 1.5;
+                margin: 0 auto;
+                max-width: 480px;
+            }
+
+            /* ===== ESTADOS DEL FONDO ===== */
+            body.state-allowed #pantallaSemaforo {
+                background: radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.20), transparent 55%), #04140B;
+            }
+
+            body.state-denied #pantallaSemaforo {
+                background: radial-gradient(circle at 50% 0%, rgba(239, 68, 68, 0.24), transparent 55%), #1A0505;
+            }
+
+            body.state-allowed #resultadoAcceso {
+                background: linear-gradient(160deg, #052E16 0%, #14532D 100%);
+                border: 1px solid rgba(34, 197, 94, 0.35);
+            }
+
+            body.state-allowed .result-icon {
+                background-color: rgba(34, 197, 94, 0.18);
+                color: #4ADE80;
+            }
+
+            body.state-allowed #mensajeEstado {
+                color: #4ADE80;
+            }
+
+            body.state-denied #resultadoAcceso {
+                background: linear-gradient(160deg, #450A0A 0%, #7F1D1D 100%);
+                border: 1px solid rgba(239, 68, 68, 0.4);
+            }
+
+            body.state-denied .result-icon {
+                background-color: rgba(239, 68, 68, 0.2);
+                color: #FCA5A5;
+            }
+
+            body.state-denied #mensajeEstado {
+                color: #FCA5A5;
+            }
+
+            /* ===== FOOTER ===== */
+            .page-footer {
+                margin-top: 20px;
+                color: var(--text-muted);
+                font-size: 12px;
+                letter-spacing: 0.3px;
+                opacity: 0.7;
+            }
+
+            /* ===== RESPONSIVE ===== */
+            @@media (max-width: 520px) {
+                .brand-title {
+                    font-size: 24px;
+                }
+
+                .brand-logo {
+                    height: 50px;
+                }
+
+                .access-card {
+                    padding: 18px;
+                    max-width: 100%;
+                }
+
+                #inputCI {
+                    font-size: 18px;
+                    letter-spacing: 2px;
+                    padding: 10px;
+                }
+
+                #mensajeEstado {
+                    font-size: 28px;
+                }
+
+                .result-icon {
+                    width: 76px;
+                    height: 76px;
+                    font-size: 40px;
+                }
+
+                #resultadoAcceso {
+                    padding: 32px 24px;
+                }
+
+                #detalleSocio {
+                    font-size: 18px;
+                }
+
+                #diasMorosidad {
+                    font-size: 14px;
+                }
+            }
+    </style>
 </head>
 <body>
 
-    <div id="pantallaSemaforo" class="d-flex flex-column align-items-center justify-content-center vh-100 p-3" style="background-color: #111827; transition: background-color 0.3s ease;">
+    <div id="pantallaSemaforo" class="d-flex flex-column align-items-center justify-content-center vh-100">
 
-        <div class="text-center text-white mb-4">
-            <h1 class="display-4 fw-bold" style="font-family: 'Montserrat', sans-serif;">GARRAS FITNESS CLUB</h1>
-            <p class="fs-5 text-light opacity-75">Control de Ingreso en Mostrador</p>
+        <!-- ===== CABECERA ===== -->
+        <div class="text-center mb-3">
+            <img src="~/img/logo-garras.png"
+                 alt="Garras Fitness Club"
+                 class="brand-logo" />
+
+            <h1 class="brand-title">GARRAS <span>FITNESS</span> CLUB</h1>
+            <p class="brand-subtitle">Control de Ingreso en Mostrador</p>
         </div>
 
-        <div class="card p-4 shadow-lg border-0 rounded-4 text-center" style="max-width: 500px; width: 100%; background-color: #FFFFFF;">
-            <label for="inputCI" class="form-label fw-bold fs-5 mb-3" style="color: #111827;">
-                Ingrese Cédula de Identidad (CI):
-            </label>
+        <!-- ===== CARD DE VALIDACIÓN ===== -->
+        <div class="access-card">
 
-            <div class="input-group mb-3">
-                <input type="text" id="inputCI" class="form-control form-control-lg text-center fw-bold fs-4" placeholder="Ej. 8765432" autofocus autocomplete="off" />
-            </div>
+            <label for="inputCI" class="field-label">Ingrese Cédula de Identidad (CI)</label>
 
-          
-            <div id="alertaError" class="d-none align-items-start gap-2 mb-3 p-3 rounded-3 text-start"
-                 style="background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #B91C1C; font-size: 0.9rem;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0; margin-top:2px;">
+            <input type="text"
+                   id="inputCI"
+                   placeholder="Ej. 8765432"
+                   maxlength="12"
+                   inputmode="numeric"
+                   autocomplete="off"
+                   autofocus />
+
+            <!-- Alerta de error -->
+            <div id="alertaError">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0; margin-top:2px;">
                     <circle cx="12" cy="12" r="10" stroke="#B91C1C" stroke-width="2" />
                     <path d="M12 8v5" stroke="#B91C1C" stroke-width="2" stroke-linecap="round" />
                     <circle cx="12" cy="16" r="1" fill="#B91C1C" />
@@ -41,39 +403,59 @@
                 <span id="mensajeError">Socio no encontrado. Verifique el número de CI.</span>
             </div>
 
-            <button id="btnVerificar" class="btn btn-lg text-white fw-bold py-2 rounded-3" style="background-color: #F97316; border: none;">
-                Validar Acceso
-            </button>
+            <button id="btnVerificar">Validar Acceso</button>
         </div>
 
-   
-        <div id="resultadoAcceso" class="mt-4 text-center text-white d-none">
-            <h2 id="mensajeEstado" class="display-3 fw-bold"></h2>
-            <p id="detalleSocio" class="fs-4"></p>
-            <p id="diasMorosidad" class="fs-5 fw-semibold"></p>
+        <!-- ===== FOOTER ===== -->
+        <div class="page-footer">
+            &copy; @DateTime.Now.Year Garras Fitness Club &bull; Cochabamba
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+         OVERLAY DE RESULTADO: se muestra centrado sobre la pantalla
+         ============================================================ -->
+    <div id="resultadoOverlay">
+        <div id="resultadoAcceso">
+            <div class="result-icon" id="resultIcon"></div>
+            <h2 id="mensajeEstado"></h2>
+            <p id="detalleSocio"></p>
+            <p id="diasMorosidad"></p>
         </div>
     </div>
 
     <script>
-            const inputCI = document.getElementById('inputCI');
-            const btnVerificar = document.getElementById('btnVerificar');
-            const pantalla = document.getElementById('pantallaSemaforo');
-            const contenedorResultado = document.getElementById('resultadoAcceso');
-            const mensajeEstado = document.getElementById('mensajeEstado');
-            const detalleSocio = document.getElementById('detalleSocio');
-            const diasMorosidad = document.getElementById('diasMorosidad');
-            const alertaError = document.getElementById('alertaError');
-            const mensajeError = document.getElementById('mensajeError');
+            const inputCI             = document.getElementById('inputCI');
+            const btnVerificar        = document.getElementById('btnVerificar');
+            const resultadoOverlay    = document.getElementById('resultadoOverlay');
+            const mensajeEstado       = document.getElementById('mensajeEstado');
+            const detalleSocio        = document.getElementById('detalleSocio');
+            const diasMorosidad       = document.getElementById('diasMorosidad');
+            const alertaError         = document.getElementById('alertaError');
+            const mensajeError        = document.getElementById('mensajeError');
+            const resultIcon          = document.getElementById('resultIcon');
+
+            // ============================================================
+            // NUEVO: Tiempo de visualización del resultado (en milisegundos)
+            // 15 segundos = 15000 ms
+            // ============================================================
+            const DURACION_RESULTADO_MS = 15000;
+
+            let timeoutReset = null;
 
             function ocultarAlertaError() {
-                alertaError.classList.add('d-none');
                 alertaError.classList.remove('d-flex');
             }
 
             function mostrarAlertaError(texto) {
                 mensajeError.textContent = texto;
-                alertaError.classList.remove('d-none');
                 alertaError.classList.add('d-flex');
+            }
+
+            function limpiarEstado() {
+                document.body.classList.remove('state-allowed', 'state-denied');
+                resultadoOverlay.classList.remove('visible');
             }
 
             function verificarAcceso() {
@@ -88,25 +470,39 @@
                         return response.json();
                     })
                     .then(data => {
-                        contenedorResultado.classList.remove('d-none');
+                        // Cancelar timeout previo si hubiera uno activo
+                        if (timeoutReset) clearTimeout(timeoutReset);
+
+                        // Mostrar overlay con el resultado
+                        resultadoOverlay.classList.add('visible');
                         detalleSocio.textContent = `Socio: ${data.nombreCompleto}`;
 
                         if (data.esValido) {
-                            pantalla.style.backgroundColor = '#16A34A';
+                            // ===== ACCESO PERMITIDO =====
+                            limpiarEstado();
+                            resultadoOverlay.classList.add('visible'); // re-aplicar
+                            document.body.classList.add('state-allowed');
+                            resultIcon.textContent = '✓';
                             mensajeEstado.textContent = 'ACCESO PERMITIDO';
                             diasMorosidad.textContent = `Membresía activa hasta: ${data.fechaVencimiento}`;
                         } else {
-                            pantalla.style.backgroundColor = '#DC2626';
+                            // ===== ACCESO DENEGADO =====
+                            limpiarEstado();
+                            resultadoOverlay.classList.add('visible'); // re-aplicar
+                            document.body.classList.add('state-denied');
+                            resultIcon.textContent = '✕';
                             mensajeEstado.textContent = 'ACCESO DENEGADO';
                             diasMorosidad.textContent = `Membresía vencida hace ${data.diasVencido} día(s). Debe renovar en caja.`;
                         }
 
-                        setTimeout(() => {
-                            pantalla.style.backgroundColor = '#111827';
-                            contenedorResultado.classList.add('d-none');
+                        // ============================================================
+                        // NUEVO: Auto-reset a los 15 segundos
+                        // ============================================================
+                        timeoutReset = setTimeout(() => {
+                            limpiarEstado();
                             inputCI.value = '';
                             inputCI.focus();
-                        }, 4000);
+                        }, DURACION_RESULTADO_MS);
                     })
                     .catch(err => {
                         mostrarAlertaError('Socio no encontrado o error en el servidor.');
@@ -116,11 +512,15 @@
             }
 
             btnVerificar.addEventListener('click', verificarAcceso);
+
             inputCI.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    verificarAcceso();
-                }
+                if (e.key === 'Enter') verificarAcceso();
+            });
+
+            inputCI.addEventListener('input', function () {
+                this.value = this.value.replace(/\D/g, '');
             });
     </script>
+
 </body>
 </html>

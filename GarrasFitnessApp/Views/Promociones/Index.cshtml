@@ -4,59 +4,561 @@
     var hoy = DateTime.Today;
 }
 
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Promociones Activas</h2>
-        <a asp-action="Create" class="btn btn-link text-decoration-none">+ Nueva Promoción</a>
+<!-- ============================================================
+     CABECERA
+     ============================================================ -->
+<section class="promos-header">
+
+    <div class="promos-header__content">
+        <span class="promos-header__tag">PROMOCIONES</span>
+        <h1 class="promos-header__title">
+            Promociones <span class="promos-header__accent">Activas</span>
+        </h1>
+        <p class="promos-header__subtitle">
+            Aprovecha nuestros descuentos vigentes y ahorra en tu membresía.
+        </p>
     </div>
 
-    <div class="table-responsive">
-        <table class="table align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Descuento</th>
-                    <th>Vigencia</th>
-                    <th>Estado</th>
-                    <th class="text-end">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (!Model.Any())
-                {
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-4">No hay promociones registradas.</td>
-                    </tr>
-                }
-                else
-                {
-                    @foreach (var item in Model)
-                    {
-                        bool esActiva = item.FechaInicio.Date <= hoy && item.FechaFin.Date >= hoy;
-                        <tr>
-                            <td class="fw-semibold">@item.Nombre</td>
-                            <td>Bs. @item.Descuento.ToString("F2")</td>
-                            <td>@item.FechaInicio.ToString("dd/MM/yyyy") – @item.FechaFin.ToString("dd/MM/yyyy")</td>
-                            <td>
-                                @if (esActiva)
-                                {
-                                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 rounded-pill px-3">Activa</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary bg-opacity-25 text-secondary border border-secondary border-opacity-25 rounded-pill px-3">Inactiva</span>
-                                }
-                            </td>
-                            <td class="text-end">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary me-1">Editar</a>
-                                <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('¿Seguro que deseas eliminar esta promoción?');">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
+    <a asp-action="Create" class="btn-nueva-promo">
+        <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4"
+                  stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Nueva Promoción</span>
+    </a>
+
+</section>
+
+<!-- ============================================================
+     GRID DE PROMOCIONES
+     ============================================================ -->
+@if (!Model.Any())
+{
+    <div class="promos-empty">
+        <div class="promos-empty__icon">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+                      stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                <circle cx="7" cy="7" r="1.5" fill="currentColor" />
+            </svg>
+        </div>
+        <h3>No hay promociones registradas</h3>
+        <p>Crea tu primera promoción para empezar a atraer nuevos socios.</p>
+        <a asp-action="Create" class="btn-nueva-promo btn-nueva-promo--center">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4"
+                      stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Nueva Promoción</span>
+        </a>
     </div>
-</div>
+}
+else
+{
+    <div class="promos-grid">
+
+        @foreach (var item in Model)
+        {
+            bool esActiva = item.FechaInicio.Date <= hoy && item.FechaFin.Date >= hoy;
+            var estadoClase = esActiva ? "promo-card--activa" : "promo-card--inactiva";
+            var estadoTexto = esActiva ? "Activa" : "Inactiva";
+
+            <article class="promo-card @estadoClase">
+
+                <!-- ===== IMAGEN (solo si el modelo tiene ImagenUrl) ===== -->
+                <div class="promo-card__image-wrap">
+
+                    @* Si tu modelo NO tiene ImagenUrl, este bloque solo mostrará el fallback *@
+                    <div class="promo-card__image-fallback">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+                                  stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                            <circle cx="7" cy="7" r="1.5" fill="currentColor" />
+                        </svg>
+                        <span>@item.Nombre</span>
+                    </div>
+
+                    <!-- Badge de estado -->
+                    <span class="promo-card__status @(esActiva ? "is-activa" : "is-inactiva")">
+                        <span class="promo-card__status-dot"></span>
+                        @estadoTexto
+                    </span>
+
+                    <!-- Badge de descuento -->
+                    <span class="promo-card__discount">
+                        -Bs. @item.Descuento.ToString("F2")
+                    </span>
+
+                </div>
+
+                <!-- ===== CONTENIDO ===== -->
+                <div class="promo-card__body">
+
+                    <h3 class="promo-card__title">@item.Nombre</h3>
+
+                    <p class="promo-card__desc promo-card__desc--muted">
+                        Aprovecha este descuento exclusivo por tiempo limitado.
+                    </p>
+
+                    <div class="promo-card__dates">
+                        <svg class="promo-card__dates-icon" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2" />
+                            <path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <span>@item.FechaInicio.ToString("dd/MM/yyyy") — @item.FechaFin.ToString("dd/MM/yyyy")</span>
+                    </div>
+
+                    <div class="promo-card__actions">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn-promo btn-promo--edit">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 20h9" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
+                                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            Editar
+                        </a>
+
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post"
+                              onsubmit="return confirm('¿Seguro que deseas eliminar esta promoción?');"
+                              style="margin:0; display:contents;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn-promo btn-promo--delete">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14"
+                                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                Eliminar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+        }
+
+    </div>
+}
+
+<!-- ============================================================
+     ESTILOS
+     ============================================================ -->
+<style>
+    /* ============================================================
+           HEADER
+           ============================================================ */
+    .promos-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding: 40px 40px 24px;
+        background: radial-gradient(circle at 10% 0%, rgba(249, 115, 22, 0.12), transparent 40%), radial-gradient(circle at 90% 100%, rgba(251, 146, 60, 0.10), transparent 40%), linear-gradient(180deg, #FFFFFF 0%, #FFF7ED 100%);
+        border-bottom: 1px solid #F1F5F9;
+    }
+
+    .promos-header__content {
+        max-width: 640px;
+    }
+
+    .promos-header__tag {
+        display: inline-block;
+        padding: 6px 16px;
+        margin-bottom: 14px;
+        border-radius: 999px;
+        background: rgba(249, 115, 22, 0.1);
+        color: #F97316;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .promos-header__title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: clamp(28px, 4vw, 40px);
+        color: #111827;
+        margin-bottom: 8px;
+        line-height: 1.1;
+    }
+
+    .promos-header__accent {
+        color: #F97316;
+    }
+
+    .promos-header__subtitle {
+        color: #64748B;
+        font-size: 15px;
+        margin: 0;
+    }
+
+    /* ============================================================
+           BOTÓN NUEVA PROMOCIÓN
+           ============================================================ */
+    .btn-nueva-promo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 13px 24px;
+        border-radius: 11px;
+        background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 13.5px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        text-decoration: none;
+        box-shadow: 0 10px 24px rgba(249, 115, 22, 0.35);
+        transition: transform 0.15s ease, box-shadow 0.25s ease;
+        white-space: nowrap;
+    }
+
+        .btn-nueva-promo svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-nueva-promo:hover {
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(249, 115, 22, 0.5);
+        }
+
+    .btn-nueva-promo--center {
+        margin-top: 18px;
+    }
+
+    /* ============================================================
+           GRID
+           ============================================================ */
+    .promos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 28px;
+        padding: 32px 40px 60px;
+        background: linear-gradient(180deg, #FFF7ED 0%, #FFFFFF 200px);
+    }
+
+    /* ============================================================
+           CARD
+           ============================================================ */
+    .promo-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 4px 14px rgba(17, 24, 39, 0.05);
+        transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+
+        .promo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 22px 44px rgba(17, 24, 39, 0.12);
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+
+    .promo-card--activa::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #16A34A 0%, #4ADE80 100%);
+        z-index: 3;
+    }
+
+    .promo-card--inactiva {
+        opacity: 0.85;
+    }
+
+        .promo-card--inactiva::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #94A3B8 0%, #CBD5E1 100%);
+            z-index: 3;
+        }
+
+    /* ===== IMAGEN / FALLBACK ===== */
+    .promo-card__image-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+        overflow: hidden;
+    }
+
+    .promo-card__image-fallback {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #F97316;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        background: radial-gradient(circle at 30% 20%, rgba(249, 115, 22, 0.14), transparent 50%), radial-gradient(circle at 80% 80%, rgba(251, 146, 60, 0.10), transparent 50%), linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+        text-align: center;
+        padding: 20px;
+    }
+
+        .promo-card__image-fallback svg {
+            width: 44px;
+            height: 44px;
+            opacity: 0.7;
+        }
+
+    /* ===== BADGES ===== */
+    .promo-card__status {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .promo-card__status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .promo-card__status.is-activa {
+        background: rgba(220, 252, 231, 0.95);
+        color: #15803D;
+    }
+
+        .promo-card__status.is-activa .promo-card__status-dot {
+            background: #16A34A;
+            box-shadow: 0 0 8px #16A34A;
+        }
+
+    .promo-card__status.is-inactiva {
+        background: rgba(226, 232, 240, 0.95);
+        color: #475569;
+    }
+
+        .promo-card__status.is-inactiva .promo-card__status-dot {
+            background: #94A3B8;
+        }
+
+    .promo-card__discount {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        display: inline-block;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 13px;
+        font-weight: 900;
+        box-shadow: 0 8px 20px rgba(249, 115, 22, 0.45);
+    }
+
+    /* ===== CONTENIDO ===== */
+    .promo-card__body {
+        padding: 20px 22px 22px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .promo-card__title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 19px;
+        color: #111827;
+        margin: 0 0 8px;
+        line-height: 1.25;
+        transition: color 0.25s ease;
+    }
+
+    .promo-card:hover .promo-card__title {
+        color: #F97316;
+    }
+
+    .promo-card__desc {
+        font-size: 13.5px;
+        color: #4B5563;
+        line-height: 1.5;
+        margin: 0 0 16px;
+    }
+
+    .promo-card__desc--muted {
+        color: #94A3B8;
+        font-style: italic;
+    }
+
+    .promo-card__dates {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background-color: #F8FAFC;
+        border: 1px solid #E5E7EB;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #475569;
+    }
+
+    .promo-card__dates-icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        color: #F97316;
+    }
+
+    /* ===== ACCIONES ===== */
+    .promo-card__actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: auto;
+    }
+
+    .btn-promo {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12.5px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .btn-promo svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    .btn-promo--edit {
+        border: 1.5px solid #E5E7EB;
+        color: #111827;
+        background: transparent;
+    }
+
+        .btn-promo--edit:hover {
+            border-color: #F97316;
+            color: #F97316;
+            background: #FFF7ED;
+            transform: translateY(-2px);
+        }
+
+    .btn-promo--delete {
+        border: 1.5px solid #FECACA;
+        color: #DC2626;
+        background: transparent;
+    }
+
+        .btn-promo--delete:hover {
+            background: #DC2626;
+            border-color: #DC2626;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+
+    /* ============================================================
+           ESTADO VACÍO
+           ============================================================ */
+    .promos-empty {
+        text-align: center;
+        padding: 80px 24px;
+        max-width: 480px;
+        margin: 0 auto;
+    }
+
+    .promos-empty__icon {
+        width: 88px;
+        height: 88px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+        color: #F97316;
+        box-shadow: 0 12px 28px rgba(249, 115, 22, 0.18);
+    }
+
+        .promos-empty__icon svg {
+            width: 42px;
+            height: 42px;
+        }
+
+    .promos-empty h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 22px;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+
+    .promos-empty p {
+        color: #64748B;
+        font-size: 14.5px;
+        margin-bottom: 8px;
+    }
+
+    /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+    @@media (max-width: 780px) {
+        .promos-header {
+            padding: 30px 20px 20px;
+        }
+
+        .promos-grid {
+            padding: 24px 20px 50px;
+            gap: 20px;
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .promos-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .btn-nueva-promo {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .promo-card__actions {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
