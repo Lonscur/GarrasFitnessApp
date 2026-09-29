@@ -2,183 +2,749 @@
     ViewData["Title"] = "Inicio";
 }
 
-<!-- ==================== HERO ==================== -->
-<div class="container">
-    <div class="text-center py-5">
-        <h1 class="display-4 fw-bold" style="font-family:'Montserrat',sans-serif;">
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero-section">
+    <div class="container text-center position-relative" style="z-index: 2;">
+        <h1 class="hero-title">
             Bienvenido a <span style="color:#F97316;">Garras Fitness Club</span>
         </h1>
-        <p class="lead text-muted">Tu mejor versión empieza hoy.</p>
-        <a class="btn btn-lg text-white fw-bold mt-3"
-           style="background-color:#F97316;"
+        <p class="hero-subtitle">Tu mejor versión empieza hoy.</p>
+        <a class="btn btn-hero"
            asp-controller="Socios" asp-action="Create">
             Inscribirme ahora
         </a>
     </div>
-</div>
+</section>
 
-<!-- ==================== 3 TARJETAS DEL GYM ==================== -->
-<section class="py-5">
-    <div class="container">
-        <div class="row g-4 text-center">
+<!-- ============================================================
+     BENEFICIOS
+     ============================================================ -->
+<section class="benefits-section">
+    <div class="benefits-grid">
 
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 p-4">
-                    <i class="bi bi-lightning-charge-fill fs-1" style="color:#F97316;"></i>
-                    <h4 class="mt-3 fw-bold" style="font-family:'Montserrat',sans-serif;">
-                        Entrenadores Pro
-                    </h4>
-                    <p class="text-muted mb-0">
-                        Rutinas personalizadas según tu objetivo. Te acompañamos en cada repetición.
-                    </p>
-                </div>
+        <article class="benefit-card">
+            <div class="benefit-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2L4.09 12.97A1 1 0 0 0 5 14.5h6.5l-1 7 8.91-10.97A1 1 0 0 0 18.5 9H12l1-7z"
+                          fill="currentColor" />
+                </svg>
             </div>
+            <h3 class="benefit-title">Entrenadores Pro</h3>
+            <div class="benefit-divider"></div>
+            <p class="benefit-text">
+                Rutinas personalizadas según tu objetivo.
+                Te acompañamos en cada repetición.
+            </p>
+        </article>
 
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 p-4">
-                    <i class="bi bi-heart-pulse-fill fs-1" style="color:#F97316;"></i>
-                    <h4 class="mt-3 fw-bold" style="font-family:'Montserrat',sans-serif;">
-                        Equipos Modernos
-                    </h4>
-                    <p class="text-muted mb-0">
-                        Máquinas de última generación siempre disponibles para que no pierdas tiempo.
-                    </p>
-                </div>
+        <article class="benefit-card benefit-card--featured">
+            <div class="benefit-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                          fill="currentColor" />
+                    <path d="M3 12h5l2-3 3 6 2-3h6"
+                          stroke="#FFFFFF" stroke-width="1.8"
+                          stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                </svg>
             </div>
+            <h3 class="benefit-title">Equipos Modernos</h3>
+            <div class="benefit-divider"></div>
+            <p class="benefit-text">
+                Máquinas de última generación siempre
+                disponibles para que no pierdas tiempo.
+            </p>
+        </article>
 
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 p-4">
-                    <i class="bi bi-people-fill fs-1" style="color:#F97316;"></i>
-                    <h4 class="mt-3 fw-bold" style="font-family:'Montserrat',sans-serif;">
-                        Comunidad
-                    </h4>
-                    <p class="text-muted mb-0">
-                        Entrena rodeado de gente que te motiva. Aquí nadie entrena solo.
-                    </p>
-                </div>
+        <article class="benefit-card">
+            <div class="benefit-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm-8 1a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h10v-1.5C11 15.17 6.33 14 4 14zm12 0c-.29 0-.62.02-.97.05A5.4 5.4 0 0 1 17 17.5V19h6v-1.5c0-2.33-4.67-3.5-7-3.5z"
+                          fill="currentColor" />
+                </svg>
             </div>
+            <h3 class="benefit-title">Comunidad</h3>
+            <div class="benefit-divider"></div>
+            <p class="benefit-text">
+                Entrena rodeado de gente que te motiva.
+                Aquí nadie entrena solo.
+            </p>
+        </article>
 
-        </div>
     </div>
 </section>
 
-<!-- ==================== ESTADÍSTICAS ==================== -->
-<section class="py-5" style="background-color:#111827; color:white;">
-    <div class="container">
-        <div class="row text-center g-4">
-            <div class="col-6 col-md-3">
-                <h2 class="display-5 fw-bold" style="color:#F97316; font-family:'Montserrat',sans-serif;">+250</h2>
-                <p class="text-uppercase small mb-0">Socios activos</p>
-            </div>
-            <div class="col-6 col-md-3">
-                <h2 class="display-5 fw-bold" style="color:#F97316; font-family:'Montserrat',sans-serif;">12</h2>
-                <p class="text-uppercase small mb-0">Entrenadores</p>
-            </div>
-            <div class="col-6 col-md-3">
-                <h2 class="display-5 fw-bold" style="color:#F97316; font-family:'Montserrat',sans-serif;">50+</h2>
-                <p class="text-uppercase small mb-0">Máquinas</p>
-            </div>
-            <div class="col-6 col-md-3">
-                <h2 class="display-5 fw-bold" style="color:#F97316; font-family:'Montserrat',sans-serif;">24/7</h2>
-                <p class="text-uppercase small mb-0">Acceso</p>
-            </div>
+<!-- ============================================================
+     ESTADÍSTICAS
+     ============================================================ -->
+<section class="stats-section">
+    <div class="stats-grid">
+
+        <div class="stat-item">
+            <h2 class="stat-number">+250</h2>
+            <p class="stat-label">Socios activos</p>
         </div>
+
+        <div class="stat-item">
+            <h2 class="stat-number">12</h2>
+            <p class="stat-label">Entrenadores</p>
+        </div>
+
+        <div class="stat-item">
+            <h2 class="stat-number">50+</h2>
+            <p class="stat-label">Máquinas</p>
+        </div>
+
+        <div class="stat-item">
+            <h2 class="stat-number">24/7</h2>
+            <p class="stat-label">Acceso</p>
+        </div>
+
     </div>
 </section>
 
-<!-- ==================== PLANES ==================== -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold" style="font-family:'Montserrat',sans-serif;">
-                Nuestros <span style="color:#F97316;">Planes</span>
-            </h2>
-            <p class="text-muted">Elige el que mejor se adapte a ti.</p>
-        </div>
+<!-- ============================================================
+     PLANES
+     ============================================================ -->
+<section class="plans-section">
 
-        <div class="row g-4">
+    <div class="text-center mb-5">
+        <h2 class="section-title">
+            Nuestros <span style="color:#F97316;">Planes</span>
+        </h2>
+        <p class="section-subtitle">Elige el que mejor se adapte a ti.</p>
+    </div>
 
-            <!-- Plan Básico -->
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 text-center p-4">
-                    <h5 class="fw-bold text-uppercase" style="color:#111827;">Básico</h5>
-                    <h2 class="display-5 fw-bold my-3" style="color:#F97316; font-family:'Montserrat',sans-serif;">
-                        Bs. 150
-                    </h2>
-                    <p class="text-muted small">por mes</p>
-                    <ul class="list-unstyled text-start mt-3">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Acceso al área de pesas</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Vestidores</li>
-                        <li class="mb-2 text-muted"><i class="bi bi-x-circle me-2"></i>Clases grupales</li>
-                        <li class="mb-2 text-muted"><i class="bi bi-x-circle me-2"></i>Entrenador personal</li>
-                    </ul>
-                    <a asp-controller="Socios" asp-action="Create"
-                       class="btn fw-bold mt-3"
-                       style="border: 2px solid #F97316; color:#F97316;">
-                        Elegir Básico
-                    </a>
-                </div>
-            </div>
+    <div class="plans-grid">
 
-            <!-- Plan Pro (destacado) -->
-            <div class="col-md-4">
-                <div class="card border-0 shadow h-100 text-center p-4 position-relative"
-                     style="border-top: 5px solid #F97316 !important;">
-                    <span class="badge position-absolute top-0 start-50 translate-middle"
-                          style="background-color:#F97316;">MÁS POPULAR</span>
-                    <h5 class="fw-bold text-uppercase mt-3" style="color:#111827;">Pro</h5>
-                    <h2 class="display-5 fw-bold my-3" style="color:#F97316; font-family:'Montserrat',sans-serif;">
-                        Bs. 250
-                    </h2>
-                    <p class="text-muted small">por mes</p>
-                    <ul class="list-unstyled text-start mt-3">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Todo lo del plan Básico</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Clases grupales ilimitadas</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Acceso a zona cardio</li>
-                        <li class="mb-2 text-muted"><i class="bi bi-x-circle me-2"></i>Entrenador personal</li>
-                    </ul>
-                    <a asp-controller="Socios" asp-action="Create"
-                       class="btn fw-bold mt-3 text-white"
-                       style="background-color:#F97316;">
-                        Elegir Pro
-                    </a>
-                </div>
-            </div>
+        <!-- Plan Básico -->
+        <article class="plan-card">
+            <h5 class="plan-name">Básico</h5>
+            <h2 class="plan-price">Bs. 150</h2>
+            <p class="plan-period">por mes</p>
+            <ul class="plan-features">
+                <li class="feature-included">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#F97316" />
+                        <path d="M8 12.5l3 3 5-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    </svg>
+                    Acceso al área de pesas
+                </li>
+                <li class="feature-included">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#F97316" />
+                        <path d="M8 12.5l3 3 5-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    </svg>
+                    Vestidores
+                </li>
+                <li class="feature-excluded">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#E5E7EB" />
+                        <path d="M8 8l8 8M16 8l-8 8" stroke="#9CA3AF" stroke-width="2.2" stroke-linecap="round" />
+                    </svg>
+                    Clases grupales
+                </li>
+                <li class="feature-excluded">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#E5E7EB" />
+                        <path d="M8 8l8 8M16 8l-8 8" stroke="#9CA3AF" stroke-width="2.2" stroke-linecap="round" />
+                    </svg>
+                    Entrenador personal
+                </li>
+            </ul>
+            <a asp-controller="Socios" asp-action="Create" class="plan-btn plan-btn--outline">
+                Elegir Básico
+            </a>
+        </article>
 
-            <!-- Plan Premium -->
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 text-center p-4">
-                    <h5 class="fw-bold text-uppercase" style="color:#111827;">Premium</h5>
-                    <h2 class="display-5 fw-bold my-3" style="color:#F97316; font-family:'Montserrat',sans-serif;">
-                        Bs. 400
-                    </h2>
-                    <p class="text-muted small">por mes</p>
-                    <ul class="list-unstyled text-start mt-3">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Todo lo del plan Pro</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Entrenador personal</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Plan nutricional</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill me-2" style="color:#F97316;"></i>Acceso 24/7</li>
-                    </ul>
-                    <a asp-controller="Socios" asp-action="Create"
-                       class="btn fw-bold mt-3"
-                       style="border: 2px solid #F97316; color:#F97316;">
-                        Elegir Premium
-                    </a>
-                </div>
-            </div>
+        <!-- Plan Pro -->
+        <article class="plan-card plan-card--featured">
+            <span class="plan-badge">MÁS POPULAR</span>
+            <h5 class="plan-name">Pro</h5>
+            <h2 class="plan-price">Bs. 250</h2>
+            <p class="plan-period">por mes</p>
+            <ul class="plan-features">
+                <li class="feature-included">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#F97316" />
+                        <path d="M8 12.5l3 3 5-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    </svg>
+                    Todo lo del plan Básico
+                </li>
+                <li class="feature-included">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#F97316" />
+                        <path d="M8 12.5l3 3 5-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    </svg>
+                    Clases grupales ilimitadas
+                </li>
+                <li class="feature-included">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#F97316" />
+                        <path d="M8 12.5l3 3 5-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    </svg>
+                    Acceso a zona cardio
+                </li>
+                <li class="feature-excluded">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#E5E7EB" />
+                        <path d="M8 8l8 8M16 8l-8 8" stroke="#9CA3AF" stroke-width="2.2" stroke-linecap="round" />
+                    </svg>
+                    Entrenador personal
+                </li>
+            </ul>
+            <a asp-controller="Socios" asp-action="Create" class="plan-btn plan-btn--solid">
+                Elegir Pro
+            </a>
+        </article>
 
-        </div>
+        <!-- Plan Premium -->
+        <article class="plan-card">
+            <h5 class="plan-name">Premium</h5>
+            <h2 class="plan-price">Bs. 400</h2>
+            <p class="plan-period">por mes</p>
+            <ul class="plan-features">
+                <li class="feature-included">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#F97316" />
+                        <path d="M8 12.5l3 3 5-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    </svg>
+                    Todo lo del plan Pro
+                </li>
+                <li class="feature-included">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#F97316" />
+                        <path d="M8 12.5l3 3 5-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    </svg>
+                    Entrenador personal
+                </li>
+                <li class="feature-included">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#F97316" />
+                        <path d="M8 12.5l3 3 5-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    </svg>
+                    Plan nutricional
+                </li>
+                <li class="feature-included">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#F97316" />
+                        <path d="M8 12.5l3 3 5-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    </svg>
+                    Acceso 24/7
+                </li>
+            </ul>
+            <a asp-controller="Socios" asp-action="Create" class="plan-btn plan-btn--outline">
+                Elegir Premium
+            </a>
+        </article>
+
     </div>
 </section>
 
-<!-- ==================== CTA FINAL ==================== -->
-<section class="py-5 text-center text-white" style="background-color:#F97316;">
-    <div class="container">
-        <h2 class="fw-bold" style="font-family:'Montserrat',sans-serif;">¿Listo para empezar?</h2>
-        <p class="lead mb-4">Inscríbete hoy y obtén tu primera semana gratis.</p>
-        <a class="btn btn-lg btn-light fw-bold"
+<!-- ============================================================
+     CTA FINAL
+     ============================================================ -->
+<section class="cta-section">
+    <div class="container text-center position-relative" style="z-index: 2;">
+        <h2 class="cta-title">¿Listo para empezar?</h2>
+        <p class="cta-subtitle">Inscríbete hoy y obtén tu primera semana gratis.</p>
+        <a class="btn btn-cta"
            asp-controller="Socios" asp-action="Create">
             Quiero ser socio
         </a>
     </div>
 </section>
+
+<!-- ============================================================
+     ESTILOS
+     ============================================================ -->
+<style>
+    /* ============ HERO ============ */
+    .hero-section {
+        position: relative;
+        padding: 100px 24px 80px;
+        background: radial-gradient(circle at 15% 15%, rgba(249, 115, 22, 0.18), transparent 40%), radial-gradient(circle at 85% 85%, rgba(251, 146, 60, 0.15), transparent 45%), radial-gradient(circle at 50% 50%, rgba(255, 247, 237, 0.9), transparent 70%), linear-gradient(135deg, #FFFFFF 0%, #FFF7ED 50%, #FFFFFF 100%);
+        overflow: hidden;
+    }
+
+        .hero-section::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23F97316' fill-opacity='0.08'/%3E%3C/svg%3E");
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+    .hero-title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: clamp(32px, 5vw, 56px);
+        letter-spacing: -0.5px;
+        color: #111827;
+        line-height: 1.1;
+        margin-bottom: 16px;
+    }
+
+    .hero-subtitle {
+        font-size: clamp(15px, 2vw, 19px);
+        color: #64748B;
+        margin-bottom: 32px;
+    }
+
+    .btn-hero {
+        display: inline-block;
+        padding: 16px 38px;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        text-decoration: none;
+        box-shadow: 0 12px 28px rgba(249, 115, 22, 0.35);
+        transition: transform 0.15s ease, box-shadow 0.25s ease;
+    }
+
+        .btn-hero:hover {
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(249, 115, 22, 0.45);
+        }
+
+    /* ============ BENEFICIOS ============ */
+    .benefits-section {
+        padding: 60px 40px;
+        background: radial-gradient(circle at 0% 0%, rgba(249, 115, 22, 0.06), transparent 40%), radial-gradient(circle at 100% 100%, rgba(251, 146, 60, 0.06), transparent 40%), linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+    }
+
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+        max-width: 100%;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .benefit-card {
+        position: relative;
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-radius: 18px;
+        padding: 40px 28px 32px;
+        text-align: center;
+        box-shadow: 0 4px 14px rgba(17, 24, 39, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        overflow: hidden;
+    }
+
+        .benefit-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #F97316 0%, #FB923C 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(17, 24, 39, 0.12);
+            border-color: rgba(249, 115, 22, 0.35);
+        }
+
+            .benefit-card:hover::before {
+                transform: scaleX(1);
+            }
+
+    .benefit-card--featured {
+        background: linear-gradient(180deg, #FFFFFF 0%, #FFF7ED 100%);
+        border-color: rgba(249, 115, 22, 0.25);
+        box-shadow: 0 10px 30px rgba(249, 115, 22, 0.12);
+    }
+
+    .benefit-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+        color: #F97316;
+        box-shadow: 0 6px 16px rgba(249, 115, 22, 0.18);
+        transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+        .benefit-icon svg {
+            width: 34px;
+            height: 34px;
+            max-width: 34px;
+            max-height: 34px;
+        }
+
+    .benefit-card:hover .benefit-icon {
+        transform: scale(1.08) rotate(-3deg);
+        background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+        color: #FFFFFF;
+    }
+
+    .benefit-title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 22px;
+        color: #111827;
+        margin: 0 0 14px;
+        transition: color 0.25s ease;
+    }
+
+    .benefit-card:hover .benefit-title {
+        color: #F97316;
+    }
+
+    .benefit-divider {
+        width: 42px;
+        height: 3px;
+        margin: 0 auto 16px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, #F97316 0%, #FB923C 100%);
+        opacity: 0.7;
+        transition: width 0.3s ease, opacity 0.3s ease;
+    }
+
+    .benefit-card:hover .benefit-divider {
+        width: 64px;
+        opacity: 1;
+    }
+
+    .benefit-text {
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: #4B5563;
+        margin: 0;
+    }
+
+    /* ============ ESTADÍSTICAS ============ */
+    .stats-section {
+        padding: 70px 40px;
+        background: radial-gradient(circle at 20% 30%, rgba(249, 115, 22, 0.18), transparent 50%), radial-gradient(circle at 80% 70%, rgba(251, 146, 60, 0.14), transparent 50%), radial-gradient(circle at 50% 100%, rgba(234, 88, 12, 0.12), transparent 60%), linear-gradient(135deg, #0B1220 0%, #111827 50%, #1F2937 100%);
+        color: #FFFFFF;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        max-width: 100%;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 20px;
+        border-radius: 14px;
+        transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-3px);
+        }
+
+    .stat-number {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: clamp(28px, 4vw, 48px);
+        color: #F97316;
+        margin-bottom: 6px;
+        line-height: 1;
+        text-shadow: 0 0 24px rgba(249, 115, 22, 0.45);
+    }
+
+    .stat-label {
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #94A3B8;
+        margin: 0;
+    }
+
+    /* ============ PLANES ============ */
+    .plans-section {
+        padding: 80px 40px;
+        background: radial-gradient(circle at 50% 0%, rgba(249, 115, 22, 0.08), transparent 50%), linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+    }
+
+    .section-title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: clamp(28px, 4vw, 40px);
+        color: #111827;
+        margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+        color: #64748B;
+        font-size: 15px;
+        margin-bottom: 0;
+    }
+
+    .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        max-width: 100%;
+        width: 100%;
+        margin: 0 auto;
+        align-items: stretch;
+    }
+
+    .plan-card {
+        position: relative;
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-radius: 20px;
+        padding: 36px 28px 32px;
+        text-align: center;
+        box-shadow: 0 4px 14px rgba(17, 24, 39, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .plan-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(17, 24, 39, 0.12);
+        }
+
+    .plan-card--featured {
+        border: 2px solid #F97316;
+        box-shadow: 0 14px 40px rgba(249, 115, 22, 0.18);
+        transform: scale(1.03);
+        background: linear-gradient(180deg, #FFFFFF 0%, #FFF7ED 100%);
+    }
+
+        .plan-card--featured:hover {
+            transform: scale(1.03) translateY(-6px);
+        }
+
+    .plan-badge {
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 6px 18px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 11.5px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
+        white-space: nowrap;
+    }
+
+    .plan-name {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 15px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #111827;
+        margin-bottom: 12px;
+    }
+
+    .plan-price {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 46px;
+        color: #F97316;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .plan-period {
+        color: #94A3B8;
+        font-size: 13.5px;
+        margin: 8px 0 24px;
+    }
+
+    .plan-features {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 28px;
+        text-align: left;
+        flex-grow: 1;
+    }
+
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .plan-features .feature-excluded {
+            color: #9CA3AF;
+        }
+
+    .feature-icon {
+        width: 18px;
+        height: 18px;
+        max-width: 18px;
+        max-height: 18px;
+        flex-shrink: 0;
+    }
+
+    .plan-btn {
+        display: block;
+        width: 100%;
+        padding: 13px;
+        border-radius: 11px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease;
+    }
+
+    .plan-btn--outline {
+        border: 2px solid #F97316;
+        background: transparent;
+        color: #F97316;
+    }
+
+        .plan-btn--outline:hover {
+            background: #F97316;
+            color: #FFFFFF;
+        }
+
+    .plan-btn--solid {
+        border: 2px solid #F97316;
+        background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+        color: #FFFFFF;
+        box-shadow: 0 10px 24px rgba(249, 115, 22, 0.35);
+    }
+
+        .plan-btn--solid:hover {
+            color: #FFFFFF;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 30px rgba(249, 115, 22, 0.45);
+        }
+
+    /* ============================================================
+           CTA FINAL — ACTUALIZADO con el tono durazno del hero
+           ============================================================ */
+    .cta-section {
+        padding: 80px 24px;
+        /* MISMO TONO QUE EL HERO: radiales sutiles + gradiente durazno claro */
+        background: radial-gradient(circle at 15% 15%, rgba(249, 115, 22, 0.18), transparent 40%), radial-gradient(circle at 85% 85%, rgba(251, 146, 60, 0.15), transparent 45%), radial-gradient(circle at 50% 50%, rgba(255, 247, 237, 0.9), transparent 70%), linear-gradient(135deg, #FFFFFF 0%, #FFF7ED 50%, #FFFFFF 100%);
+        color: #FFFFFF;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .cta-section::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23F97316' fill-opacity='0.08'/%3E%3C/svg%3E");
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+    .cta-title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: clamp(26px, 4vw, 38px);
+        margin-bottom: 10px;
+        color: #111827;
+    }
+
+    .cta-subtitle {
+        font-size: 16px;
+        color: #64748B;
+        margin-bottom: 28px;
+    }
+
+    .btn-cta {
+        display: inline-block;
+        padding: 16px 40px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        text-decoration: none;
+        box-shadow: 0 12px 28px rgba(249, 115, 22, 0.35);
+        transition: transform 0.15s ease, box-shadow 0.25s ease;
+    }
+
+        .btn-cta:hover {
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(249, 115, 22, 0.45);
+        }
+
+    /* ============ RESPONSIVE ============ */
+    @@media (max-width: 900px) {
+        .benefits-grid,
+        .plans-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .plan-card--featured {
+            transform: none;
+        }
+
+            .plan-card--featured:hover {
+                transform: translateY(-6px);
+            }
+    }
+
+    @@media (max-width: 520px) {
+        .hero-section {
+            padding: 60px 20px 50px;
+        }
+
+        .benefits-section,
+        .plans-section,
+        .cta-section,
+        .stats-section {
+            padding: 50px 20px;
+        }
+
+        .btn-hero,
+        .btn-cta {
+            padding: 14px 28px;
+            font-size: 13.5px;
+        }
+    }
+</style>
